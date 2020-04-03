@@ -10,7 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import util.AstroTest;
+import fr.insalyon.dasi.util.AstroTest;
+import java.util.List;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -31,6 +33,10 @@ public class Client implements Serializable {
     @Embedded
     private Adresse adresse;
     private String motDePasse;
+    @Embedded
+    private ProfilAstrologique profilAstro;
+    @OneToMany
+    private List<Consultation> historiqueConsultations;
 
     protected Client() {
     }
@@ -42,6 +48,7 @@ public class Client implements Serializable {
         this.naissance = naissance;
         this.adresse = adresse;
         this.motDePasse = motDePasse;
+        this.profilAstro = new ProfilAstrologique();
     }
 
     public Long getId() {
@@ -66,6 +73,10 @@ public class Client implements Serializable {
 
     public Adresse getAdresse() {
         return adresse;
+    }
+
+    public ProfilAstrologique getProfilAstro() {
+        return profilAstro;
     }
 
     public String getMotDePasse() {
@@ -96,10 +107,13 @@ public class Client implements Serializable {
         this.motDePasse = motDePasse;
     }
 
+    public void setProfilAstro(ProfilAstrologique profilAstro) {
+        this.profilAstro = profilAstro;
+    }
+
     @Override
     public String toString() {
-        return "Client{" + "mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + '}';
-    }
-    
+        return "Client{" + "id=" + id + ", mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + '}';
+    }   
 
 }

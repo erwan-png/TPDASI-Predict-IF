@@ -1,12 +1,13 @@
 package fr.insalyon.dasi.metier.modele;
 
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 /**
  *
  * @author eversmee
  */
 @Embeddable
-public class Adresse {
+public class Adresse implements Serializable {
     private String lieuResidence;
     private String codePostale;
     private String ville;

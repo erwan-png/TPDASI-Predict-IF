@@ -1,4 +1,4 @@
-package util;
+package fr.insalyon.dasi.util;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -26,21 +26,10 @@ import org.apache.http.message.BasicNameValuePair;
  * @author DASI Team
  *
  */
-/* DÉPENDANCES Maven:
-<dependency>
-   <groupId>com.google.code.gson</groupId>
-   <artifactId>gson</artifactId>
-   <version>2.8.5</version>
-</dependency>
-<dependency>
-   <groupId>org.apache.httpcomponents</groupId>
-   <artifactId>httpclient</artifactId>
-   <version>4.5.7</version>
-</dependency>
- */
+
 public class AstroTest {
 
-    final static String MA_CLE_ASTRO_API = "XXXXXXXX-Moodle-Clé";
+    final static String MA_CLE_ASTRO_API = "ASTRO-02-M0lGLURBU0ktQVNUUk8tQjAy";
 
     public static final String ENCODING_UTF8 = "UTF-8";
     public static final SimpleDateFormat JSON_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");

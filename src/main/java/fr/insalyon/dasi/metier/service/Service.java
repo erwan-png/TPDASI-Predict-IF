@@ -3,9 +3,12 @@ package fr.insalyon.dasi.metier.service;
 import fr.insalyon.dasi.dao.ClientDao;
 import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.metier.modele.Client;
+import fr.insalyon.dasi.metier.modele.ProfilAstrologique;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import fr.insalyon.dasi.util.AstroTest;
+import java.io.IOException;
 
 /**
  *
@@ -15,8 +18,16 @@ public class Service {
 
     protected ClientDao clientDao = new ClientDao();
 
-    public Long inscrireClient(Client client) {
+    public Long inscrireClient(Client client) throws IOException {
         Long resultat = null;
+        AstroTest profilAstro = new AstroTest();
+        
+        List<String> astroClient = profilAstro.getProfil(client.getPrenom(),client.getNaissance());
+        client.getProfilAstro().setSigneZodiaque(astroClient.get(0));
+        client.getProfilAstro().setSigneChinois(astroClient.get(1));
+        client.getProfilAstro().setCouleur(astroClient.get(2));
+        client.getProfilAstro().setAnimal(astroClient.get(3));
+ 
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();

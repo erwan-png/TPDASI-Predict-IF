@@ -4,6 +4,7 @@ import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.metier.modele.Adresse;
 import fr.insalyon.dasi.metier.modele.Client;
 import fr.insalyon.dasi.metier.service.Service;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +21,7 @@ import javax.persistence.Persistence;
  */
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
 
         // TODO : Pensez à créer une unité de persistance "DASI-PU" et à vérifier son nom dans la classe JpaUtil
         // Contrôlez l'affichage du log de JpaUtil grâce à la méthode log de la classe JpaUtil
@@ -80,7 +81,7 @@ public class Main {
         System.out.println();
     }*/
 
-    public static void testerInscriptionClient() throws ParseException {
+    public static void testerInscriptionClient() throws ParseException, IOException {
         
         System.out.println();
         System.out.println("**** testerInscriptionClient() ****");
