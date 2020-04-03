@@ -5,12 +5,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-
-//Testing
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import util.AstroTest;
 
 /**
@@ -20,16 +19,18 @@ import util.AstroTest;
 @Entity
 public class Client implements Serializable {
 
-        @Id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique=true)
     private String mail;
     private String nom;
     private String prenom;
+    @Temporal(TemporalType.DATE)
     private Date naissance;
     @Embedded
     private Adresse adresse;
-    @Column(unique = true)
     private String motDePasse;
-    private AstroTest profilAstrologique;
 
     protected Client() {
     }
@@ -41,6 +42,10 @@ public class Client implements Serializable {
         this.naissance = naissance;
         this.adresse = adresse;
         this.motDePasse = motDePasse;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getMail() {
@@ -93,7 +98,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + ", profilAstrologique=" + profilAstrologique + '}';
+        return "Client{" + "mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + '}';
     }
     
 

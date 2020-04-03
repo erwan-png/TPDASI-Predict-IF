@@ -16,7 +16,7 @@ public class ClientDao {
         em.persist(client);
     }
     
-    public Client chercherParId(Long clientId) {
+    /*public Client chercherParId(Long clientId) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         return em.find(Client.class, clientId); // renvoie null si l'identifiant n'existe pas
     }
@@ -39,5 +39,5 @@ public class ClientDao {
         return query.getResultList();
     }
     
-    // modifier / supprimer  ... 
+    // modifier / supprimer  ... */
 }

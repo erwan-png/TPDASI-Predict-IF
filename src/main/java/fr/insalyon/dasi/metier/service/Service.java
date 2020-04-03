@@ -33,7 +33,7 @@ public class Service {
         return resultat;
     }
 
-    public Client rechercherClientParId(Long id) {
+    /*public Client rechercherClientParId(Long id) {
         Client resultat = null;
         JpaUtil.creerContextePersistance();
         try {
@@ -80,6 +80,6 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return resultat;
-    }
+    }*/
 
 }
