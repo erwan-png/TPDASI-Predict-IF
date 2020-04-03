@@ -1,8 +1,12 @@
 package fr.insalyon.dasi.ihm.console;
 
 import fr.insalyon.dasi.dao.JpaUtil;
+import fr.insalyon.dasi.metier.modele.Adresse;
 import fr.insalyon.dasi.metier.modele.Client;
 import fr.insalyon.dasi.metier.service.Service;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,14 +20,14 @@ import javax.persistence.Persistence;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
         // TODO : Pensez à créer une unité de persistance "DASI-PU" et à vérifier son nom dans la classe JpaUtil
         // Contrôlez l'affichage du log de JpaUtil grâce à la méthode log de la classe JpaUtil
         JpaUtil.init();
 
-        initialiserClients();            // Question 3
-        //testerInscriptionClient();       // Question 4 & 5
+        //initialiserClients();            // Question 3
+        testerInscriptionClient();       // Question 4 & 5
         //testerRechercheClient();         // Question 6
         //testerListeClients();            // Question 7
         //testerAuthentificationClient();  // Question 8
@@ -38,7 +42,7 @@ public class Main {
         System.out.println("-> " + client);
     }
 
-    public static void initialiserClients() {
+    /*public static void initialiserClients() {
         
         System.out.println();
         System.out.println("**** initialiserClients() ****");
@@ -48,21 +52,15 @@ public class Main {
         EntityManager em = emf.createEntityManager();
 
         Client ada = new Client("Lovelace", "Ada", "ada.lovelace@insa-lyon.fr", "Ada1012");
-        Client blaise = new Client("Pascal", "Blaise", "blaise.pascal@insa-lyon.fr", "Blaise1906");
-        Client fred = new Client("Fotiadu", "Frédéric", "frederic.fotiadu@insa-lyon.fr", "INSA-Forever");
-        
+
         System.out.println();
         System.out.println("** Clients avant persistance: ");
         afficherClient(ada);
-        afficherClient(blaise);
-        afficherClient(fred);
         System.out.println();
 
         try {
             em.getTransaction().begin();
             em.persist(ada);
-            em.persist(blaise);
-            em.persist(fred);
             em.getTransaction().commit();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service", ex);
@@ -79,19 +77,22 @@ public class Main {
         System.out.println();
         System.out.println("** Clients après persistance: ");
         afficherClient(ada);
-        afficherClient(blaise);
-        afficherClient(fred);
         System.out.println();
-    }
+    }*/
 
-    public static void testerInscriptionClient() {
+    public static void testerInscriptionClient() throws ParseException {
         
         System.out.println();
         System.out.println("**** testerInscriptionClient() ****");
         System.out.println();
         
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = format.parse("31-12-2009");
+        
+        Adresse adresse = new Adresse("15 rue de la république","69000","Lyon");
+        
         Service service = new Service();
-        Client claude = new Client("Chappe", "Claude", "claude.chappe@insa-lyon.fr", "HaCKeR");
+        Client claude = new Client("claude.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR");
         Long idClaude = service.inscrireClient(claude);
         if (idClaude != null) {
             System.out.println("> Succès inscription");
@@ -99,27 +100,9 @@ public class Main {
             System.out.println("> Échec inscription");
         }
         afficherClient(claude);
-
-        Client hedy = new Client("Lamarr", "Hedy", "hlamarr@insa-lyon.fr", "WiFi");
-        Long idHedy = service.inscrireClient(hedy);
-        if (idHedy != null) {
-            System.out.println("> Succès inscription");
-        } else {
-            System.out.println("> Échec inscription");
-        }
-        afficherClient(hedy);
-
-        Client hedwig = new Client("Lamarr", "Hedwig Eva Maria", "hlamarr@insa-lyon.fr", "WiFi");
-        Long idHedwig = service.inscrireClient(hedwig);
-        if (idHedwig != null) {
-            System.out.println("> Succès inscription");
-        } else {
-            System.out.println("> Échec inscription");
-        }
-        afficherClient(hedwig);
     }
 
-    public static void testerRechercheClient() {
+    /*public static void testerRechercheClient() {
         
         System.out.println();
         System.out.println("**** testerRechercheClient() ****");
@@ -218,7 +201,7 @@ public class Main {
         }
     }
 
-    public static void saisirInscriptionClient() {
+    /*public static void saisirInscriptionClient() {
         Service service = new Service();
 
         System.out.println();
@@ -246,9 +229,9 @@ public class Main {
         }
         afficherClient(client);
 
-    }
+    }*/
 
-    public static void saisirRechercheClient() {
+    /*public static void saisirRechercheClient() {
         Service service = new Service();
 
         System.out.println();
@@ -308,5 +291,5 @@ public class Main {
         System.out.println("*****************");
         System.out.println();
 
-    }
+    }*/
 }
