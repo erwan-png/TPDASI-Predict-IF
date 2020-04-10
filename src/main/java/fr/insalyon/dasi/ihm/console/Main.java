@@ -132,8 +132,6 @@ public class Main {
         }
         
         System.out.println();
-        System.out.println("** Clients après persistance: ");
-        System.out.println();
     }
     
     public static void testerObtenirPredictions(){
