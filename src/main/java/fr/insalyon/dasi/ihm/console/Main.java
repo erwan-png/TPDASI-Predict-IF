@@ -11,11 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
@@ -38,8 +33,13 @@ public class Main {
         //saisirInscriptionClient();       // Question 9
         //saisirRechercheClient();
         //testerObtenirPredictions();
+
+        
+        testEmp();
+        
+
         //testerAjouterConsultation();
-        CreerMediums();
+        //creerMediums();
 
         JpaUtil.destroy();
     }
@@ -111,6 +111,25 @@ public class Main {
         }
         afficherClient(claude);
     }
+
+    public static void testEmp() throws IOException {
+        
+        System.out.println();
+        System.out.println("**** testEmp() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        boolean flag = service.initialiserEmploye();
+        if (flag != true) {
+            System.out.println("> Succès inscription");
+        } else {
+            System.out.println("> Échec inscription");
+        }
+        
+        System.out.println();
+        System.out.println("** Clients après persistance: ");
+        System.out.println();
+    }
     
     public static void testerObtenirPredictions(){
         
@@ -128,6 +147,7 @@ public class Main {
         System.out.println("** Recherche du Client #" + id);
         client = service.rechercherClientParId(id);
         if (client != null) {
+            afficherClient(client);
             List<String> predictions = service.obtenirPredictions(client, notes);
             System.out.println(predictions.get(0));
             System.out.println(predictions.get(1));
@@ -162,7 +182,7 @@ public class Main {
         afficherConsultation(c1);
     }
     
-    public static void CreerMediums() throws IOException{
+    public static void creerMediums() throws IOException{
         
         System.out.println();
         System.out.println("**** CreerMediums() ****");
@@ -170,7 +190,7 @@ public class Main {
         
         Service service = new Service();
         
-        service.InitialiserMediums();
+        service.initialiserMediums();
     }
 
     /*public static void testerRechercheClient() {

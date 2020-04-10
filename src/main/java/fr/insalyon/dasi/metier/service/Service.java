@@ -1,15 +1,15 @@
 package fr.insalyon.dasi.metier.service;
 
 import fr.insalyon.dasi.dao.ClientDao;
+import fr.insalyon.dasi.dao.EmployeDAO;
 import fr.insalyon.dasi.dao.ConsultationDao;
 import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.dao.MediumDao;
 import fr.insalyon.dasi.metier.modele.Astrologue;
 import fr.insalyon.dasi.metier.modele.Cartomancien;
 import fr.insalyon.dasi.metier.modele.Client;
+import fr.insalyon.dasi.metier.modele.Employe;
 import fr.insalyon.dasi.metier.modele.Consultation;
-import fr.insalyon.dasi.metier.modele.Medium;
-import fr.insalyon.dasi.metier.modele.ProfilAstrologique;
 import fr.insalyon.dasi.metier.modele.Spirite;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import fr.insalyon.dasi.util.AstroTest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class Service {
 
     protected ClientDao clientDao = new ClientDao();
+    protected EmployeDAO empDao = new EmployeDAO();
     protected ConsultationDao consultationDao = new ConsultationDao();
     protected MediumDao mediumDao = new MediumDao();
 
@@ -42,7 +44,7 @@ public class Service {
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-            clientDao.creer(client);
+            clientDao.creerClient(client);
             JpaUtil.validerTransaction();
             resultat = client.getId();
         } catch (Exception ex) {
@@ -116,18 +118,46 @@ public class Service {
         return resultat;
     }
     
-    public Long commencerConsultation(Consultation consultation) throws IOException {
+
+    public boolean initialiserEmploye() throws IOException {
+        boolean flag = false; // 0 si tout ok
+        
+        JpaUtil.creerContextePersistance();
+        try {
+            JpaUtil.ouvrirTransaction();
+            Employe[] tab = new Employe[15];
+            tab[0] = new Employe("Sierra", "Camilo", 'M', "csr@predictif.com", "123456", 0);
+            tab[1] = new Employe("Versmee", "Erwan", 'M', "ev@predictif.com", "654321", 0);
+            tab[2] = new Employe("Dupont", "François", 'M', "fd@predictif.com", "hjvdfk", 0);
+            //empDao.creerEmploye(camilo);
+            for (int i=0;i<3;i++)
+            {
+                empDao.creerEmploye(tab[i]);
+            }
+            JpaUtil.validerTransaction();
+
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service initialiserEmploye()", ex);
+            JpaUtil.annulerTransaction();
+
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return flag;
+    }
+    
+        public Long commencerConsultation(Consultation consultation) throws IOException {
         Long id;
         
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-            consultationDao.creer(consultation);
+            consultationDao.creerConsultation(consultation);
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
             
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service commencerConsultation(consultation)", ex);
             JpaUtil.annulerTransaction();
             id = null;
         } finally {
@@ -136,18 +166,19 @@ public class Service {
         return id;
     }
     
-    public Long terminerConsultation(Consultation consultation) throws IOException {
+    public Long terminerConsultation(Consultation consultation, Date heureFin ) throws IOException {
         Long id;
-        
         JpaUtil.creerContextePersistance();
+
+        consultation.setDateFin(heureFin);
         try {
             JpaUtil.ouvrirTransaction();
-            consultationDao.creer(consultation);
+            consultationDao.modifierConsultation(consultation);
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
             
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service terminerConsultation(consultation)", ex);
             JpaUtil.annulerTransaction();
             id = null;
         } finally {
@@ -156,7 +187,7 @@ public class Service {
         return id;
     }
     
-    public void InitialiserMediums() throws IOException {
+    public void initialiserMediums() throws IOException {
         
         JpaUtil.creerContextePersistance();
         
@@ -179,12 +210,12 @@ public class Service {
         try {
             
             JpaUtil.ouvrirTransaction();
-            mediumDao.creer(spiriteUn);
-            mediumDao.creer(spiriteDeux);
-            mediumDao.creer(cartomancienUn);
-            mediumDao.creer(cartomancienDeux);
-            mediumDao.creer(astrologueUn);
-            mediumDao.creer(astrologueDeux);
+            mediumDao.creerMedium(spiriteUn);
+            mediumDao.creerMedium(spiriteDeux);
+            mediumDao.creerMedium(cartomancienUn);
+            mediumDao.creerMedium(cartomancienDeux);
+            mediumDao.creerMedium(astrologueUn);
+            mediumDao.creerMedium(astrologueDeux);
             JpaUtil.validerTransaction();
             
         } catch (Exception ex) {

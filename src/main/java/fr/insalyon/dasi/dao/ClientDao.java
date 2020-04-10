@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
  */
 public class ClientDao {
     
-    public void creer(Client client) {
+    public void creerClient(Client client) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.persist(client);
     }

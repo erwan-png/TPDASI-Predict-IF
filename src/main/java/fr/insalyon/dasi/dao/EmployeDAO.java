@@ -1,6 +1,6 @@
 package fr.insalyon.dasi.dao;
 
-import fr.insalyon.dasi.metier.modele.Medium;
+import fr.insalyon.dasi.metier.modele.Employe;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -8,11 +8,10 @@ import javax.persistence.TypedQuery;
  *
  * @author eversmee
  */
-public class MediumDao {
-    
-        public void creerMedium(Medium medium) {
+public class EmployeDAO {
+    public void creerEmploye(Employe emp) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        em.persist(medium);
-        }
-        
+        em.persist(emp);
+    }
+    
 }

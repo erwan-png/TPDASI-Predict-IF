@@ -11,8 +11,13 @@ import javax.persistence.TypedQuery;
  */
 public class ConsultationDao {
     
-    public void creer(Consultation consultation) {
+    public void creerConsultation(Consultation consultation) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.persist(consultation);
+    }
+    
+    public void modifierConsultation(Consultation consultation) {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        em.merge(consultation);
     }
 }
