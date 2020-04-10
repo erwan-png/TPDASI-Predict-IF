@@ -35,8 +35,6 @@ public class Client implements Serializable {
     private String motDePasse;
     @Embedded
     private ProfilAstrologique profilAstro;
-    @OneToMany
-    private List<Consultation> historiqueConsultations;
 
     protected Client() {
     }

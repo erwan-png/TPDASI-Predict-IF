@@ -3,6 +3,8 @@ package fr.insalyon.dasi.ihm.console;
 import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.metier.modele.Adresse;
 import fr.insalyon.dasi.metier.modele.Client;
+import fr.insalyon.dasi.metier.modele.Consultation;
+import fr.insalyon.dasi.metier.modele.Employe;
 import fr.insalyon.dasi.metier.service.Service;
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,20 +30,26 @@ public class Main {
         JpaUtil.init();
 
         //initialiserClients();            // Question 3
-        testerInscriptionClient();       // Question 4 & 5
+        //testerInscriptionClient();       // Question 4 & 5
         //testerRechercheClient();         // Question 6
         //testerListeClients();            // Question 7
         //testerAuthentificationClient();  // Question 8
         
         //saisirInscriptionClient();       // Question 9
         //saisirRechercheClient();
-        testerObtenirPredictions();
+        //testerObtenirPredictions();
+        //testerAjouterConsultation();
+        CreerMediums();
 
         JpaUtil.destroy();
     }
 
     public static void afficherClient(Client client) {
         System.out.println("-> " + client);
+    }
+    
+    public static void afficherConsultation(Consultation consultation) {
+        System.out.println("-> " + consultation);
     }
 
     /*public static void initialiserClients() {
@@ -120,7 +128,6 @@ public class Main {
         System.out.println("** Recherche du Client #" + id);
         client = service.rechercherClientParId(id);
         if (client != null) {
-            afficherClient(client);
             List<String> predictions = service.obtenirPredictions(client, notes);
             System.out.println(predictions.get(0));
             System.out.println(predictions.get(1));
@@ -128,6 +135,42 @@ public class Main {
         } else {
             System.out.println("=> Client non-trouvé");
         }
+    }
+    
+    public static void testerAjouterConsultation() throws ParseException, IOException {
+        
+        System.out.println();
+        System.out.println("**** testerAjouterConsultation() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        long id = 1;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
+        Date dateDebut = format.parse("31-12-2009-17-05");
+        Date dateFin = format.parse("31-12-2009-17-31");
+        Client client = service.rechercherClientParId(id);
+
+        Employe employe = new Employe("Dupont", "Roger",'M', "roger.dupont@gmail.com", "roger666", 3);
+        
+        Consultation c1 = new Consultation(dateDebut, dateFin, employe, client,"Client très désagréable et malpoli");
+        Long idC1 = service.ajouterConsultation(c1);
+        if (idC1 != null) {
+            System.out.println("> Succès inscription");
+        } else {
+            System.out.println("> Échec inscription");
+        }
+        afficherConsultation(c1);
+    }
+    
+    public static void CreerMediums() throws IOException{
+        
+        System.out.println();
+        System.out.println("**** CreerMediums() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        
+        service.InitialiserMediums();
     }
 
     /*public static void testerRechercheClient() {

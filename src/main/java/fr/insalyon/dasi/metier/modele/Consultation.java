@@ -30,6 +30,7 @@ public class Consultation implements Serializable {
     private Date dateDebut;
     @Temporal(TemporalType.DATE)
     private Date dateFin;
+    @ManyToOne
     private Medium medium;
     @ManyToOne
     private Employe employe;
@@ -47,6 +48,10 @@ public class Consultation implements Serializable {
         this.employe = employe;
         this.client = client;
         this.commentaire = commentaire;
+    }
+
+    public Long getId_consultation() {
+        return id_consultation;
     }
 
     public Date getDateDebut() {
