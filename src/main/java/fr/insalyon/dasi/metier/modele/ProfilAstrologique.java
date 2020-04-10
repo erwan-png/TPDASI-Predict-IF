@@ -10,7 +10,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Jacques
+ * @author eversmee
  */
 @Embeddable
 public class ProfilAstrologique implements Serializable {
