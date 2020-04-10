@@ -153,7 +153,7 @@ public class Main {
         Employe employe = new Employe("Dupont", "Roger",'M', "roger.dupont@gmail.com", "roger666", 3);
         
         Consultation c1 = new Consultation(dateDebut, dateFin, employe, client,"Client très désagréable et malpoli");
-        Long idC1 = service.ajouterConsultation(c1);
+        Long idC1 = service.commencerConsultation(c1);
         if (idC1 != null) {
             System.out.println("> Succès inscription");
         } else {

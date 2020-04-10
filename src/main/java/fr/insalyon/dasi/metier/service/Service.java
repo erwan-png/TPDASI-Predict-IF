@@ -116,7 +116,27 @@ public class Service {
         return resultat;
     }
     
-    public Long ajouterConsultation(Consultation consultation) throws IOException {
+    public Long commencerConsultation(Consultation consultation) throws IOException {
+        Long id;
+        
+        JpaUtil.creerContextePersistance();
+        try {
+            JpaUtil.ouvrirTransaction();
+            consultationDao.creer(consultation);
+            JpaUtil.validerTransaction();
+            id = consultation.getId_consultation();
+            
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
+            JpaUtil.annulerTransaction();
+            id = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return id;
+    }
+    
+    public Long terminerConsultation(Consultation consultation) throws IOException {
         Long id;
         
         JpaUtil.creerContextePersistance();

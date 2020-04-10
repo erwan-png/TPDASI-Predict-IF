@@ -14,4 +14,5 @@ public class MediumDao {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.persist(medium);
         }
+        
 }
