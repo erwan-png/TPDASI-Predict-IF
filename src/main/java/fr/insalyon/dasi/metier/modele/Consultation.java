@@ -7,26 +7,30 @@ package fr.insalyon.dasi.metier.modele;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author camsiro
  */
-public class Consultation {
+@Entity
+public class Consultation implements Serializable {
     
 //Attributs
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id_consultation;
+    @Temporal(TemporalType.DATE)
     private Date dateDebut;
+    @Temporal(TemporalType.DATE)
     private Date dateFin;
-    //private Medium medium;
+    private Medium medium;
     @ManyToOne
     private Employe employe;
     @ManyToOne
@@ -34,7 +38,6 @@ public class Consultation {
     private String commentaire;
     
 //Methodes
-
     public Consultation() {
     }
 

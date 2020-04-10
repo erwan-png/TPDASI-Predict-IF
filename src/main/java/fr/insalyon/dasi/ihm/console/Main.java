@@ -35,6 +35,7 @@ public class Main {
         
         //saisirInscriptionClient();       // Question 9
         //saisirRechercheClient();
+        testerObtenirPredictions();
 
         JpaUtil.destroy();
     }
@@ -101,6 +102,32 @@ public class Main {
             System.out.println("> Échec inscription");
         }
         afficherClient(claude);
+    }
+    
+    public static void testerObtenirPredictions(){
+        
+        System.out.println();
+        System.out.println("**** testerObtenirPredictions() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        long id;
+        Client client;
+
+        id = 1;
+        int[] notes = {1,3,4};
+        
+        System.out.println("** Recherche du Client #" + id);
+        client = service.rechercherClientParId(id);
+        if (client != null) {
+            afficherClient(client);
+            List<String> predictions = service.obtenirPredictions(client, notes);
+            System.out.println(predictions.get(0));
+            System.out.println(predictions.get(1));
+            System.out.println(predictions.get(2));
+        } else {
+            System.out.println("=> Client non-trouvé");
+        }
     }
 
     /*public static void testerRechercheClient() {
