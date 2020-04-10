@@ -9,5 +9,9 @@ import javax.persistence.TypedQuery;
  * @author eversmee
  */
 public class EmployeDAO {
+    public void creerEmploye(Employe emp) {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        em.persist(emp);
+    }
     
 }

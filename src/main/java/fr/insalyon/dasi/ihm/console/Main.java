@@ -3,6 +3,7 @@ package fr.insalyon.dasi.ihm.console;
 import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.metier.modele.Adresse;
 import fr.insalyon.dasi.metier.modele.Client;
+import fr.insalyon.dasi.metier.modele.Employe;
 import fr.insalyon.dasi.metier.service.Service;
 import java.io.IOException;
 import java.text.ParseException;
@@ -28,15 +29,17 @@ public class Main {
         JpaUtil.init();
 
         //initialiserClients();            // Question 3
-        testerInscriptionClient();       // Question 4 & 5
+        //testerInscriptionClient();       // Question 4 & 5
         //testerRechercheClient();         // Question 6
         //testerListeClients();            // Question 7
         //testerAuthentificationClient();  // Question 8
         
         //saisirInscriptionClient();       // Question 9
         //saisirRechercheClient();
-        testerObtenirPredictions();
-
+        //testerObtenirPredictions();
+        
+        testEmp();
+        
         JpaUtil.destroy();
     }
 
@@ -102,6 +105,25 @@ public class Main {
             System.out.println("> Échec inscription");
         }
         afficherClient(claude);
+    }
+
+    public static void testEmp() throws IOException {
+        
+        System.out.println();
+        System.out.println("**** testEmp() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        boolean flag = service.initEmp();
+        if (flag != true) {
+            System.out.println("> Succès inscription");
+        } else {
+            System.out.println("> Échec inscription");
+        }
+        
+        System.out.println();
+        System.out.println("** Clients après persistance: ");
+        System.out.println();
     }
     
     public static void testerObtenirPredictions(){
