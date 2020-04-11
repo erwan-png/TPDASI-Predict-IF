@@ -1,7 +1,7 @@
 package fr.insalyon.dasi.metier.service;
 
 import fr.insalyon.dasi.dao.ClientDao;
-import fr.insalyon.dasi.dao.EmployeDAO;
+import fr.insalyon.dasi.dao.EmployeDao;
 import fr.insalyon.dasi.dao.ConsultationDao;
 import fr.insalyon.dasi.dao.JpaUtil;
 import fr.insalyon.dasi.dao.MediumDao;
@@ -31,7 +31,7 @@ import java.util.Date;
 public class Service {
 
     protected ClientDao clientDao = new ClientDao();
-    protected EmployeDAO employeDao = new EmployeDAO();
+    protected EmployeDao employeDao = new EmployeDao();
     protected ConsultationDao consultationDao = new ConsultationDao();
     protected MediumDao mediumDao = new MediumDao();
 
@@ -191,11 +191,23 @@ public class Service {
         try {
             JpaUtil.ouvrirTransaction();
             Employe[] tab = new Employe[15];
-            tab[0] = new Employe("Sierra", "Camilo", 'M', "csr@predictif.com", "123456"," 06 55 44 77 88", 0);
-            tab[1] = new Employe("Versmee", "Erwan", 'M', "ev@predictif.com", "654321"," 06 55 44 77 89", 0);
-            tab[2] = new Employe("Dupont", "François", 'M', "fd@predictif.com", "hjvdfk"," 06 55 44 77 90", 0);
+            tab[0] = new Employe("Sierra", "Camilo", 'M', "csr@predictif.com", "123456","00 11 22 33 44 55", 0);
+            tab[1] = new Employe("Versmee", "Erwan", 'M', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
+            tab[2] = new Employe("Dupont", "Paul", 'M', "pd@predictif.com", "hjvdfk","00 11 22 33 44 57", 0);
+            tab[3] = new Employe("Ragot", "Andres", 'M', "ar@predictif.com", "soygay","00 11 22 33 44 58", 0);
+            tab[4] = new Employe("Cohen", "Carlos", 'M', "cc@predictif.com", "soyputo","00 11 22 33 44 59", 0);
+            tab[5] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "marico","00 11 22 33 44 60", 0);
+            tab[6] = new Employe("Duclos", "Florent", 'M', "fd@predictif.com", "cvkva","00 11 22 33 44 61", 0);
+            tab[7] = new Employe("Ajami", "Wissam", 'M', "wa@predictif.com", "mashallah","00 11 22 33 44 62", 0);
+            tab[8] = new Employe("Velasquez", "Sebastian", 'M', "sv@predictif.com", "tclmelochupa","00 11 22 33 44 63", 0);
+            tab[9] = new Employe("Eyraud", "Jim", 'M', "je@predictif.com", "soygay","00 11 22 33 44 64", 0);
+            tab[10] = new Employe("Frerot", "Baptise", 'M', "bf@predictif.com", "soygay","00 11 22 33 44 64", 0);
+            tab[11] = new Employe("Dultheo", "Christopher", 'M', "cd@predictif.com", "soymacoume","00 11 22 33 44 65", 0);
+            tab[12] = new Employe("Gineste", "Matteo", 'M', "mg@predictif.com", "soygay","00 11 22 33 44 66", 0);
+            tab[13] = new Employe("Tchounikinne", "Anne", 'F', "at@predictif.com", "gcsgos","00 11 22 33 44 67", 0);
+            tab[14] = new Employe("Gripay", "Yann", 'M', "yg@predictif.com", "bfyusgvka","00 11 22 33 44 68", 0);
             //empDao.creerEmploye(camilo);
-            for (int i=0;i<3;i++)
+            for (int i=0;i<15;i++)
             {
                 employeDao.creerEmploye(tab[i]);
             }

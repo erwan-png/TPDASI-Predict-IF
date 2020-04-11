@@ -88,7 +88,6 @@ public class Main {
         } else {
             System.out.println("> Échec inscription");
         }
-        
     }
     
     public static void testerObtenirPredictions(){
