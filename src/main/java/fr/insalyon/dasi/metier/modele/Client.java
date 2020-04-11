@@ -10,9 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import fr.insalyon.dasi.util.AstroTest;
-import java.util.List;
-import javax.persistence.OneToMany;
+
 
 /**
  *
@@ -33,19 +31,21 @@ public class Client implements Serializable {
     @Embedded
     private Adresse adresse;
     private String motDePasse;
+    private String numeroTel;
     @Embedded
     private ProfilAstrologique profilAstro;
 
     protected Client() {
     }
 
-    public Client(String mail, String nom, String prenom, Date naissance, Adresse adresse, String motDePasse) {
+    public Client(String mail, String nom, String prenom, Date naissance, Adresse adresse, String motDePasse, String numeroTel) {
         this.mail = mail;
         this.nom = nom;
         this.prenom = prenom;
         this.naissance = naissance;
         this.adresse = adresse;
         this.motDePasse = motDePasse;
+        this.numeroTel = numeroTel;
         this.profilAstro = new ProfilAstrologique();
     }
 
@@ -81,6 +81,14 @@ public class Client implements Serializable {
         return motDePasse;
     }
 
+    public String getNumeroTel() {
+        return numeroTel;
+    }
+
+    public void setNumeroTel(String numeroTel) {
+        this.numeroTel = numeroTel;
+    }
+
     public void setMail(String mail) {
         this.mail = mail;
     }
@@ -111,7 +119,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + '}';
-    }   
+        return "Client{" + "id=" + id + ", mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + ", numeroTel=" + numeroTel + ", profilAstro=" + profilAstro + '}';
+    }
 
 }

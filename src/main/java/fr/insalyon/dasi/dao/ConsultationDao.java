@@ -20,4 +20,9 @@ public class ConsultationDao {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.merge(consultation);
     }
+    
+    public Consultation chercherParId(Long consultationId) {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        return em.find(Consultation.class, consultationId); // renvoie null si l'identifiant n'existe pas
+    }
 }

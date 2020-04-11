@@ -5,6 +5,7 @@ import fr.insalyon.dasi.metier.modele.Adresse;
 import fr.insalyon.dasi.metier.modele.Client;
 import fr.insalyon.dasi.metier.modele.Consultation;
 import fr.insalyon.dasi.metier.modele.Employe;
+import fr.insalyon.dasi.metier.modele.Medium;
 import fr.insalyon.dasi.metier.service.Service;
 import java.io.IOException;
 import java.text.ParseException;
@@ -20,26 +21,26 @@ public class Main {
 
     public static void main(String[] args) throws ParseException, IOException {
 
-        // TODO : Pensez à créer une unité de persistance "DASI-PU" et à vérifier son nom dans la classe JpaUtil
-        // Contrôlez l'affichage du log de JpaUtil grâce à la méthode log de la classe JpaUtil
         JpaUtil.init();
-
-        //initialiserClients();            // Question 3
-        //testerInscriptionClient();       // Question 4 & 5
-        //testerRechercheClient();         // Question 6
-        //testerListeClients();            // Question 7
-        //testerAuthentificationClient();  // Question 8
         
-        //saisirInscriptionClient();       // Question 9
+        testerInscriptionClient();
+        creerMediums();
+        testEmp();
+        
+        //testerRechercheClient();
+        //testerListeClients();
+        //testerAuthentificationClient();
+        
+        //saisirInscriptionClient();
         //saisirRechercheClient();
         //testerObtenirPredictions();
 
-        
-        testEmp();
-        
-
         //testerAjouterConsultation();
-        //creerMediums();
+        
+        //testerTerminerConsultation();
+        
+        //testerEnvoieMail();
+        testerEnvoieNotification();
 
         JpaUtil.destroy();
     }
@@ -51,44 +52,6 @@ public class Main {
     public static void afficherConsultation(Consultation consultation) {
         System.out.println("-> " + consultation);
     }
-
-    /*public static void initialiserClients() {
-        
-        System.out.println();
-        System.out.println("**** initialiserClients() ****");
-        System.out.println();
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("DASI-PU");
-        EntityManager em = emf.createEntityManager();
-
-        Client ada = new Client("Lovelace", "Ada", "ada.lovelace@insa-lyon.fr", "Ada1012");
-
-        System.out.println();
-        System.out.println("** Clients avant persistance: ");
-        afficherClient(ada);
-        System.out.println();
-
-        try {
-            em.getTransaction().begin();
-            em.persist(ada);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service", ex);
-            try {
-                em.getTransaction().rollback();
-            }
-            catch (IllegalStateException ex2) {
-                // Ignorer cette exception...
-            }
-        } finally {
-            em.close();
-        }
-
-        System.out.println();
-        System.out.println("** Clients après persistance: ");
-        afficherClient(ada);
-        System.out.println();
-    }*/
 
     public static void testerInscriptionClient() throws ParseException, IOException {
         
@@ -102,7 +65,7 @@ public class Main {
         Adresse adresse = new Adresse("15 rue de la république","69000","Lyon");
         
         Service service = new Service();
-        Client claude = new Client("claude.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR");
+        Client claude = new Client("claude.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR","05 04 65 88 29");
         Long idClaude = service.inscrireClient(claude);
         if (idClaude != null) {
             System.out.println("> Succès inscription");
@@ -120,15 +83,12 @@ public class Main {
         
         Service service = new Service();
         boolean flag = service.initialiserEmploye();
-        if (flag != true) {
+        if (flag == true) {
             System.out.println("> Succès inscription");
         } else {
             System.out.println("> Échec inscription");
         }
         
-        System.out.println();
-        System.out.println("** Clients après persistance: ");
-        System.out.println();
     }
     
     public static void testerObtenirPredictions(){
@@ -167,20 +127,46 @@ public class Main {
         long id = 1;
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
         Date dateDebut = format.parse("31-12-2009-17-05");
-        Date dateFin = format.parse("31-12-2009-17-31");
         Client client = service.rechercherClientParId(id);
-
-        Employe employe = new Employe("Dupont", "Roger",'M', "roger.dupont@gmail.com", "roger666", 3);
+        Employe employe = service.rechercherEmployeParId(id);
+        Medium medium = service.rechercherMediumParId(id);
         
-        Consultation c1 = new Consultation(dateDebut, dateFin, employe, client,"Client très désagréable et malpoli");
+        Consultation c1 = new Consultation(dateDebut, null, medium, employe, client,"Client très désagréable et malpoli");
         Long idC1 = service.commencerConsultation(c1);
         if (idC1 != null) {
-            System.out.println("> Succès inscription");
+            System.out.println("> Succès ajout");
         } else {
-            System.out.println("> Échec inscription");
+            System.out.println("> Échec ajout");
         }
         afficherConsultation(c1);
     }
+    
+    public static void testerTerminerConsultation() throws ParseException, IOException {
+        
+        System.out.println();
+        System.out.println("**** testerTerminerConsultation() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        long id=1;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
+        Date dateFin = format.parse("31-12-2009-17-31");
+        Consultation consultation = service.rechercherConsultationParId(id);
+        
+        if (consultation != null){
+        
+            Long id_test = service.terminerConsultation(consultation, dateFin);
+        
+            if (id_test != null) {
+                System.out.println("> Succès ajout");
+            } else {
+                System.out.println("> Échec ajout");
+            }
+        } else {
+            System.out.println("> Échec ajout");
+        }
+    }
+
     
     public static void creerMediums() throws IOException{
         
@@ -190,10 +176,16 @@ public class Main {
         
         Service service = new Service();
         
-        service.initialiserMediums();
+        boolean flag = service.initialiserMediums();
+        
+        if (flag == true) {
+            System.out.println("> Succès inscription");
+        } else {
+            System.out.println("> Échec inscription");
+        }
     }
 
-    /*public static void testerRechercheClient() {
+    public static void testerRechercheClient() {
         
         System.out.println();
         System.out.println("**** testerRechercheClient() ****");
@@ -241,9 +233,9 @@ public class Main {
         List<Client> listeClients = service.listerClients();
         System.out.println("*** Liste des Clients");
         if (listeClients != null) {
-            for (Client client : listeClients) {
+            listeClients.forEach((client) -> {
                 afficherClient(client);
-            }
+            });
         }
         else {
             System.out.println("=> ERREUR...");
@@ -291,96 +283,53 @@ public class Main {
             System.out.println("Authentification échouée avec le mail '" + mail + "' et le mot de passe '" + motDePasse + "'");
         }
     }
-
-    /*public static void saisirInscriptionClient() {
+    
+    public static void testerEnvoieMail() {
+        
+        System.out.println();
+        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println();
+        
         Service service = new Service();
-
+        long id;
+        id = 1;
+        Client client = service.rechercherClientParId(id);
+        
         System.out.println();
-        System.out.println("Appuyer sur Entrée pour passer la pause...");
-        Saisie.pause();
-
+        System.out.println("**** Envoie Mail réussite Inscription ****");
         System.out.println();
-        System.out.println("**************************");
-        System.out.println("** NOUVELLE INSCRIPTION **");
-        System.out.println("**************************");
+        service.genererMailClientSuccesInscription(client);
+        
         System.out.println();
-
-        String nom = Saisie.lireChaine("Nom ? ");
-        String prenom = Saisie.lireChaine("Prénom ? ");
-        String mail = Saisie.lireChaine("Mail ? ");
-        String motDePasse = Saisie.lireChaine("Mot de passe ? ");
-
-        Client client = new Client(nom, prenom, mail, motDePasse);
-        Long idClient = service.inscrireClient(client);
-
-        if (idClient != null) {
-            System.out.println("> Succès inscription");
-        } else {
-            System.out.println("> Échec inscription");
-        }
-        afficherClient(client);
-
-    }*/
-
-    /*public static void saisirRechercheClient() {
+        System.out.println("**** Envoie Mail échec Inscription ****");
+        System.out.println();
+        service.genererMailClientEchecInscription(client);
+        
+        System.out.println();
+        System.out.println("**** Fin ****");
+        System.out.println();
+    }
+    
+    public static void testerEnvoieNotification() {
+        System.out.println();
+        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println();
+        
         Service service = new Service();
-
+        long id;
+        id = 1;
+        Client client = service.rechercherClientParId(id);
+        Medium medium = service.rechercherMediumParId(id);
+        Employe employe = service.rechercherEmployeParId(id);
+        
         System.out.println();
-        System.out.println("*********************");
-        System.out.println("** MENU INTERACTIF **");
-        System.out.println("*********************");
+        System.out.println("**** Envoie Notification consultation ****");
         System.out.println();
-
-        Saisie.pause();
-
+        
+        service.genererNotificationClient(client, medium, employe);
+        
         System.out.println();
-        System.out.println("**************************");
-        System.out.println("** RECHERCHE de CLIENTS **");
-        System.out.println("**************************");
+        System.out.println("**** Fin ****");
         System.out.println();
-        System.out.println();
-        System.out.println("** Recherche par Identifiant:");
-        System.out.println();
-
-        Integer idClient = Saisie.lireInteger("Identifiant ? [0 pour quitter] ");
-        while (idClient != 0) {
-            Client client = service.rechercherClientParId(idClient.longValue());
-            if (client != null) {
-                afficherClient(client);
-            } else {
-                System.out.println("=> Client #" + idClient + " non-trouvé");
-            }
-            System.out.println();
-            idClient = Saisie.lireInteger("Identifiant ? [0 pour quitter] ");
-        }
-
-        System.out.println();
-        System.out.println("********************************");
-        System.out.println("** AUTHENTIFICATION de CLIENT **");
-        System.out.println("********************************");
-        System.out.println();
-        System.out.println();
-        System.out.println("** Authentifier Client:");
-        System.out.println();
-
-        String clientMail = Saisie.lireChaine("Mail ? [0 pour quitter] ");
-
-        while (!clientMail.equals("0")) {
-            String clientMotDePasse = Saisie.lireChaine("Mot de passe ? ");
-            Client client = service.authentifierClient(clientMail, clientMotDePasse);
-            if (client != null) {
-                afficherClient(client);
-            } else {
-                System.out.println("=> Client non-authentifié");
-            }
-            clientMail = Saisie.lireChaine("Mail ? [0 pour quitter] ");
-        }
-
-        System.out.println();
-        System.out.println("*****************");
-        System.out.println("** AU REVOIR ! **");
-        System.out.println("*****************");
-        System.out.println();
-
-    }*/
+    }
 }

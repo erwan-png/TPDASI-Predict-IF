@@ -33,7 +33,7 @@ public class ClientDao {
         return result;
     }
     
-    /*public List<Client> listerClients() {
+    public List<Client> listerClients() {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c ORDER BY c.nom ASC, c.prenom ASC", Client.class);
         return query.getResultList();

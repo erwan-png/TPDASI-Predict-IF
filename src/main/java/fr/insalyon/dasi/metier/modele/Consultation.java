@@ -26,9 +26,9 @@ public class Consultation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_consultation;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIME)
     private Date dateDebut;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIME)
     private Date dateFin;
     @ManyToOne
     private Medium medium;
@@ -42,9 +42,10 @@ public class Consultation implements Serializable {
     public Consultation() {
     }
 
-    public Consultation(Date dateDebut, Date dateFin, Employe employe, Client client, String commentaire) {
+    public Consultation(Date dateDebut, Date dateFin, Medium medium, Employe employe, Client client, String commentaire) {
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
+        this.medium = medium;
         this.employe = employe;
         this.client = client;
         this.commentaire = commentaire;
@@ -64,6 +65,10 @@ public class Consultation implements Serializable {
 
     public Employe getEmploye() {
         return employe;
+    }
+
+    public Medium getMedium() {
+        return medium;
     }
 
     public Client getClient() {
@@ -86,6 +91,10 @@ public class Consultation implements Serializable {
         this.employe = employe;
     }
 
+    public void setMedium(Medium medium) {
+        this.medium = medium;
+    }
+
     public void setClient(Client client) {
         this.client = client;
     }
@@ -96,8 +105,7 @@ public class Consultation implements Serializable {
 
     @Override
     public String toString() {
-        return "Consultation{" + "dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", employe=" + employe + ", client=" + client + ", commentaire=" + commentaire + '}';
+        return "Consultation{" + "id_consultation=" + id_consultation + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", medium=" + medium + ", employe=" + employe + ", client=" + client + ", commentaire=" + commentaire + '}';
     }
-    
     
 }
