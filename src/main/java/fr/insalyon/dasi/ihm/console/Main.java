@@ -42,7 +42,9 @@ public class Main {
         //testerEnvoieMail();
         //testerEnvoieNotification();
         
-        testerTrouverEmployerNoteMaxi();
+        //testerTrouverEmployerNoteMaxi();
+        
+        testerObtenirHistoriqueConsultationsClient();
 
         JpaUtil.destroy();
     }
@@ -135,6 +137,9 @@ public class Main {
         long id4 = 4;
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
         Date dateDebut = format.parse("31-12-2009-17-05");
+        Date dateDebut2 = format.parse("08-12-2011-13-28");
+        Date dateDebut3 = format.parse("08-04-2012-14-00");
+        Date dateDebut4 = format.parse("08-12-2012-08-54");
         Client client = service.rechercherClientParId(id);
         Employe employe = service.rechercherEmployeParId(id);
         Medium medium = service.rechercherMediumParId(id);
@@ -149,12 +154,12 @@ public class Main {
         Medium medium4 = service.rechercherMediumParId(id4);
         
         Consultation c1 = new Consultation(dateDebut, null, medium, employe, client,"Client très désagréable et malpoli");
-        Consultation c2 = new Consultation(dateDebut, null, medium, employe2, client,"Client très désagréable et malpoli");
-        Consultation c3 = new Consultation(dateDebut, null, medium, employe3, client,"Client très désagréable et malpoli");
-        Consultation c4 = new Consultation(dateDebut, null, medium4, employe4, client,"Client très désagréable et malpoli");
+        Consultation c2 = new Consultation(dateDebut2, null, medium, employe2, client,"Client très doux");
+        Consultation c3 = new Consultation(dateDebut3, null, medium, employe3, client,"Un agneau");
+        Consultation c4 = new Consultation(dateDebut4, null, medium4, employe4, client,"Client bizarre");
         
         Long idC1 = service.commencerConsultation(c1);
-        //Long idC2 = service.commencerConsultation(c2);
+        Long idC2 = service.commencerConsultation(c2);
         Long idC3 = service.commencerConsultation(c3);
         Long idC4 = service.commencerConsultation(c4);
         
@@ -176,18 +181,24 @@ public class Main {
         long id=1;
         long id2=2;
         long id3=3;
+        long id4=4;
         
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
-        Date dateFin = format.parse("31-12-2009-17-31");
+        Date dateFin = format.parse("31-12-2009-17-25");
+        Date dateFin2 = format.parse("08-12-2011-13-34");
+        Date dateFin3 = format.parse("08-04-2012-14-55");
+        Date dateFin4= format.parse("08-12-2012-09-24");
         Consultation consultation = service.rechercherConsultationParId(id);
         Consultation consultation2 = service.rechercherConsultationParId(id2);
         Consultation consultation3 = service.rechercherConsultationParId(id3);
+        Consultation consultation4 = service.rechercherConsultationParId(id4);
         
         if (consultation != null){
         
-            Long id_test = service.terminerConsultation(consultation, dateFin);
-            Long id_test2 = service.terminerConsultation(consultation2, dateFin);
-            Long id_test3 = service.terminerConsultation(consultation3, dateFin);
+            Long id_test = service.terminerConsultation(consultation,"Client malpoli", dateFin);
+            Long id_test2 = service.terminerConsultation(consultation2,"Fin et doux", dateFin2);
+            Long id_test3 = service.terminerConsultation(consultation3,"Un vrai petit ange", dateFin3);
+             Long id_test4 = service.terminerConsultation(consultation4,"Client bizarre", dateFin4);
         
             if (id_test != null) {
                 System.out.println("> Succès fin de consultation");
@@ -383,7 +394,7 @@ public class Main {
         List<Employe> employesDispo = service.listerEmployeParPriorite('F');
         
         System.out.println();
-        System.out.println("**** liste des Employes avec lanote maximale****");
+        System.out.println("**** liste des Employes avec la note maximale****");
         System.out.println();
         
         if(employesDispo !=null) {
@@ -398,5 +409,41 @@ public class Main {
         System.out.println();
         System.out.println("**** Fin ****");
         System.out.println();
+    }
+    
+    public static void testerObtenirHistoriqueConsultationsClient() throws ParseException, IOException {
+        System.out.println();
+        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        long id;
+        id = 1;
+        
+        creerMediums();
+        testerInscriptionClient();
+        testEmp();
+        Client client = service.rechercherClientParId(id);
+        
+        testerAjouterConsultation();
+        testerTerminerConsultation();
+        
+        List<Consultation> res = service.consulterHistoriqueConsultationClient(client);
+        
+        if(res != null) {
+            System.out.println();
+            System.out.println("**** Consultations client : ****");
+            System.out.println();
+            res.forEach((consultation) -> {
+                afficherConsultation(consultation);
+            });
+            System.out.println();
+            System.out.println("**** Fin Consultations client ****");
+            System.out.println();
+        } else {
+            System.out.println();
+            System.out.println("**** Aucun résultat ****");
+            System.out.println();
+        }
     }
 }

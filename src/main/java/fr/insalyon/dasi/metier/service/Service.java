@@ -82,7 +82,7 @@ public class Service {
         try {
             resultat = employeDao.chercherParId(id);
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherClientParId(id)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherEmployeParId(id)", ex);
             resultat = null;
         } finally {
             JpaUtil.fermerContextePersistance();
@@ -96,7 +96,7 @@ public class Service {
         try {
             resultat = mediumDao.chercherParId(id);
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherClientParId(id)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherMediumParId(id)", ex);
             resultat = null;
         } finally {
             JpaUtil.fermerContextePersistance();
@@ -110,7 +110,7 @@ public class Service {
         try {
             resultat = consultationDao.chercherParId(id);
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherClientParId(id)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service rechercherConsultationParId(id)", ex);
             resultat = null;
         } finally {
             JpaUtil.fermerContextePersistance();
@@ -149,7 +149,7 @@ public class Service {
                 resultat = true;
             }
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service authentifierClient(mail,motDePasse)", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service estInscrit(mail)", ex);
             resultat = false;
         } finally {
             JpaUtil.fermerContextePersistance();
@@ -250,9 +250,10 @@ public class Service {
         return id;
     }
     
-    public Long terminerConsultation(Consultation consultation, Date heureFin ) throws IOException {
+    public Long terminerConsultation(Consultation consultation, String commentaire, Date heureFin ) throws IOException {
         Long id;
         consultation.getEmploye().setDisponibilite(true);
+        consultation.setCommentaire(commentaire);
         
         JpaUtil.creerContextePersistance();
 
@@ -430,5 +431,20 @@ public class Service {
         notificationWriter.println("Vous pouvez dès à présent me contacter au "+ employe.getNumeroTel() +". A tout de suite ! Médiumiquement vôtre, " + medium.getDenomination());
         
         Message.envoyerNotification(numeroTelClient,message.toString());
+    }
+    
+    public List<Consultation> consulterHistoriqueConsultationClient(Client client) {
+        List<Consultation> resultat = null;
+        JpaUtil.creerContextePersistance();
+        
+        try {
+            resultat = consultationDao.obtenirHistoriqueConsultationsClient(client);
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service consulterHistoriqueConsultationClient(Client client)", ex);
+            resultat = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return resultat;
     }
 }
