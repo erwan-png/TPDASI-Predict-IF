@@ -31,4 +31,16 @@ public class EmployeDao {
         TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
         return query.getResultList();
     }
+    
+    public List<Employe> listerEmployesParPriorite(char genreMedium) {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e WHERE e.genre =:genre AND e.disponibilite = 1 ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
+        query.setParameter("genre", genreMedium); 
+        return query.getResultList();
+    }
+        
+    public void gererConsultation(Employe employe) {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        em.merge(employe);
+    }
 }

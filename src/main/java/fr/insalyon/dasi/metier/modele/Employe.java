@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 /**
  *
@@ -31,7 +30,6 @@ public class Employe implements Serializable {
     private String mail;
     private String motDePasse;
     private String numeroTel;
-    @Transient
     private boolean disponibilite;
     private int nbConsultations;
     

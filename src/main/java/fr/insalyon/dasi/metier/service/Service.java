@@ -191,21 +191,21 @@ public class Service {
         try {
             JpaUtil.ouvrirTransaction();
             Employe[] tab = new Employe[15];
-            tab[0] = new Employe("Sierra", "Camilo", 'M', "csr@predictif.com", "123456","00 11 22 33 44 55", 0);
-            tab[1] = new Employe("Versmee", "Erwan", 'M', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
-            tab[2] = new Employe("Dupont", "Paul", 'M', "pd@predictif.com", "hjvdfk","00 11 22 33 44 57", 0);
-            tab[3] = new Employe("Ragot", "Andres", 'M', "ar@predictif.com", "soygay","00 11 22 33 44 58", 0);
-            tab[4] = new Employe("Cohen", "Carlos", 'M', "cc@predictif.com", "soyputo","00 11 22 33 44 59", 0);
-            tab[5] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "marico","00 11 22 33 44 60", 0);
-            tab[6] = new Employe("Duclos", "Florent", 'M', "fd@predictif.com", "cvkva","00 11 22 33 44 61", 0);
-            tab[7] = new Employe("Ajami", "Wissam", 'M', "wa@predictif.com", "mashallah","00 11 22 33 44 62", 0);
-            tab[8] = new Employe("Velasquez", "Sebastian", 'M', "sv@predictif.com", "tclmelochupa","00 11 22 33 44 63", 0);
-            tab[9] = new Employe("Eyraud", "Jim", 'M', "je@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[10] = new Employe("Frerot", "Baptise", 'M', "bf@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[11] = new Employe("Dultheo", "Christopher", 'M', "cd@predictif.com", "soymacoume","00 11 22 33 44 65", 0);
-            tab[12] = new Employe("Gineste", "Matteo", 'M', "mg@predictif.com", "soygay","00 11 22 33 44 66", 0);
+            tab[0] = new Employe("Sierra", "Camilo", 'H', "csr@predictif.com", "123456","00 11 22 33 44 55", 0);
+            tab[1] = new Employe("Versmee", "Erwan", 'H', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
+            tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "marico","00 11 22 33 44 60", 0);
+            tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "soygay","00 11 22 33 44 58", 0);
+            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "soyputo","00 11 22 33 44 59", 0);
+            tab[5] = new Employe("Dupont", "Paul", 'H', "pd@predictif.com", "hjvdfk","00 11 22 33 44 57", 0);
+            tab[6] = new Employe("Duclos", "Florent", 'H', "fd@predictif.com", "cvkva","00 11 22 33 44 61", 0);
+            tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "mashallah","00 11 22 33 44 62", 0);
+            tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "tclmelochupa","00 11 22 33 44 63", 0);
+            tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "soygay","00 11 22 33 44 64", 0);
+            tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "soygay","00 11 22 33 44 64", 0);
+            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "soymacoume","00 11 22 33 44 65", 0);
+            tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "soygay","00 11 22 33 44 66", 0);
             tab[13] = new Employe("Tchounikinne", "Anne", 'F', "at@predictif.com", "gcsgos","00 11 22 33 44 67", 0);
-            tab[14] = new Employe("Gripay", "Yann", 'M', "yg@predictif.com", "bfyusgvka","00 11 22 33 44 68", 0);
+            tab[14] = new Employe("Gripay", "Yann", 'H', "yg@predictif.com", "bfyusgvka","00 11 22 33 44 68", 0);
             //empDao.creerEmploye(camilo);
             for (int i=0;i<15;i++)
             {
@@ -228,14 +228,16 @@ public class Service {
     public Long commencerConsultation(Consultation consultation) throws IOException {
         Long id;
         consultation.getEmploye().setDisponibilite(false);
+        consultation.getEmploye().setNbConsultations(consultation.getEmploye().getNbConsultations()+1);
         
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
             consultationDao.creerConsultation(consultation);
+            employeDao.gererConsultation(consultation.getEmploye());
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
-            consultation.getEmploye().setNbConsultations(consultation.getEmploye().getNbConsultations()+1);
+            
             
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service commencerConsultation(consultation)", ex);
@@ -258,6 +260,7 @@ public class Service {
         try {
             JpaUtil.ouvrirTransaction();
             consultationDao.modifierConsultation(consultation);
+            employeDao.gererConsultation(consultation.getEmploye());
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
             
@@ -351,9 +354,9 @@ public class Service {
         JpaUtil.creerContextePersistance();
         
         try {
-            employesOK = employeDao.listerEmployes();
+            employesOK = employeDao.listerEmployesParPriorite(genre);
         } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service listerMediums()", ex);
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service listerEmployeParPriorite()", ex);
             employesOK = null;
         } finally {
             JpaUtil.fermerContextePersistance();
@@ -363,13 +366,14 @@ public class Service {
             int nbConsultMini=employesOK.get(0).getNbConsultations();
             
             for (int i=0;i<employesOK.size();i++) {
-                if (employesOK.get(i).getGenre()==genre && employesOK.get(i).getNbConsultations()<nbConsultMini) {
+                if (employesOK.get(i).getNbConsultations()<nbConsultMini) {
                     nbConsultMini=employesOK.get(i).getNbConsultations();
                 }
             }
             
-            for (int i=0;i<employesOK.size();i++) {
-                if (employesOK.get(i).getNbConsultations()!=nbConsultMini || employesOK.get(i).getGenre()!=genre) {
+            int taille = employesOK.size();
+            for (int i=0;i<taille;i++) {
+                if (employesOK.get(i).getNbConsultations()!=nbConsultMini) {
                     employesOK.remove(i);
                 }
             }
