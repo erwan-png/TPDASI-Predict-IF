@@ -69,7 +69,7 @@ public class Employe implements Serializable {
         return mail;
     }
 
-    public String getMdp() {
+    public String getMotDePasse() {
         return motDePasse;
     }
 

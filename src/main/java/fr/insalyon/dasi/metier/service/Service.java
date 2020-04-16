@@ -139,6 +139,27 @@ public class Service {
         return resultat;
     }
     
+    public Employe authentifierEmploye(String mail, String motDePasse) {
+        Employe resultat = null;
+        JpaUtil.creerContextePersistance();
+        try {
+            // Recherche du client
+            Employe employe = employeDao.chercherParMail(mail);
+            if (employe != null) {
+                // Vérification du mot de passe
+                if (employe.getMotDePasse().equals(motDePasse)) {
+                    resultat = employe;
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service authentifierEmploye(mail,motDePasse)", ex);
+            resultat = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return resultat;
+    }
+    
     public boolean estInscrit(String mail) {
         boolean resultat = false;
         JpaUtil.creerContextePersistance();
@@ -250,14 +271,13 @@ public class Service {
         return id;
     }
     
-    public Long terminerConsultation(Consultation consultation, String commentaire, Date heureFin ) throws IOException {
+    public Long terminerConsultation(Consultation consultation, Date heureFin ) throws IOException {
         Long id;
         consultation.getEmploye().setDisponibilite(true);
-        consultation.setCommentaire(commentaire);
+        consultation.setHeureFin(heureFin);
         
         JpaUtil.creerContextePersistance();
-
-        consultation.setDateFin(heureFin);
+        
         try {
             JpaUtil.ouvrirTransaction();
             consultationDao.modifierConsultation(consultation);
@@ -267,6 +287,29 @@ public class Service {
             
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service terminerConsultation(consultation, heureFin)", ex);
+            JpaUtil.annulerTransaction();
+            consultation.getEmploye().setDisponibilite(false);
+            id = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return id;
+    }
+    
+    public Long laisserCommentaire(Consultation consultation, String commentaire) throws IOException {
+        Long id;
+        consultation.setCommentaire(commentaire);
+        
+        JpaUtil.creerContextePersistance();
+        
+        try {
+            JpaUtil.ouvrirTransaction();
+            consultationDao.modifierConsultation(consultation);
+            JpaUtil.validerTransaction();
+            id = consultation.getId_consultation();
+            
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service laisserCommentaire(consultation, commentaire)", ex);
             JpaUtil.annulerTransaction();
             consultation.getEmploye().setDisponibilite(false);
             id = null;

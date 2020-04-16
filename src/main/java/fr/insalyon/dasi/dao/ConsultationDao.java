@@ -29,7 +29,7 @@ public class ConsultationDao {
     
     public List<Consultation> obtenirHistoriqueConsultationsClient(Client client) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.client =:client ORDER BY c.dateDebut", Consultation.class);
+        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.client =:client ORDER BY c.dateConsultation DESC", Consultation.class);
         query.setParameter("client", client); 
         return query.getResultList();
     }

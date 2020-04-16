@@ -135,11 +135,18 @@ public class Main {
         long id2 = 2;
         long id3 = 3;
         long id4 = 4;
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
-        Date dateDebut = format.parse("31-12-2009-17-05");
-        Date dateDebut2 = format.parse("08-12-2011-13-28");
-        Date dateDebut3 = format.parse("08-04-2012-14-00");
-        Date dateDebut4 = format.parse("08-12-2012-08-54");
+        SimpleDateFormat formatHeure = new SimpleDateFormat("hh-mm");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateDebut = formatHeure.parse("17-05");
+        Date dateDebut2 = formatHeure.parse("13-28");
+        Date dateDebut3 = formatHeure.parse("14-00");
+        Date dateDebut4 = formatHeure.parse("08-54");
+        
+        Date date1 = formatDate.parse("31-12-2009");
+        Date date2 = formatDate.parse("08-12-2011");
+        Date date3 = formatDate.parse("08-04-2012");
+        Date date4 = formatDate.parse("08-12-2012");
+        
         Client client = service.rechercherClientParId(id);
         Employe employe = service.rechercherEmployeParId(id);
         Medium medium = service.rechercherMediumParId(id);
@@ -153,10 +160,10 @@ public class Main {
         Employe employe4 = service.rechercherEmployeParId(id4);
         Medium medium4 = service.rechercherMediumParId(id4);
         
-        Consultation c1 = new Consultation(dateDebut, null, medium, employe, client,"Client très désagréable et malpoli");
-        Consultation c2 = new Consultation(dateDebut2, null, medium, employe2, client,"Client très doux");
-        Consultation c3 = new Consultation(dateDebut3, null, medium, employe3, client,"Un agneau");
-        Consultation c4 = new Consultation(dateDebut4, null, medium4, employe4, client,"Client bizarre");
+        Consultation c1 = new Consultation(dateDebut, null,date1, medium, employe, client,null);
+        Consultation c2 = new Consultation(dateDebut2, null,date2, medium, employe2, client,null);
+        Consultation c3 = new Consultation(dateDebut3, null,date3, medium, employe3, client,null);
+        Consultation c4 = new Consultation(dateDebut4, null,date4, medium4, employe4, client,null);
         
         Long idC1 = service.commencerConsultation(c1);
         Long idC2 = service.commencerConsultation(c2);
@@ -195,10 +202,15 @@ public class Main {
         
         if (consultation != null){
         
-            Long id_test = service.terminerConsultation(consultation,"Client malpoli", dateFin);
-            Long id_test2 = service.terminerConsultation(consultation2,"Fin et doux", dateFin2);
-            Long id_test3 = service.terminerConsultation(consultation3,"Un vrai petit ange", dateFin3);
-             Long id_test4 = service.terminerConsultation(consultation4,"Client bizarre", dateFin4);
+            Long id_test = service.terminerConsultation(consultation, dateFin);
+            Long id_test2 = service.terminerConsultation(consultation2, dateFin2);
+            Long id_test3 = service.terminerConsultation(consultation3, dateFin3);
+            Long id_test4 = service.terminerConsultation(consultation4, dateFin4);
+            
+            Long id_1 = service.laisserCommentaire(consultation,"Client malpoli");
+            Long id_2 = service.laisserCommentaire(consultation,"Client malpoli");
+            Long id_3 = service.laisserCommentaire(consultation,"Client malpoli");
+            Long id_4 = service.laisserCommentaire(consultation,"Client malpoli");
         
             if (id_test != null) {
                 System.out.println("> Succès fin de consultation");

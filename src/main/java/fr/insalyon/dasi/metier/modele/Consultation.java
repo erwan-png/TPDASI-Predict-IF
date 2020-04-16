@@ -27,9 +27,11 @@ public class Consultation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_consultation;
     @Temporal(TemporalType.TIME)
-    private Date dateDebut;
+    private Date heureDebut;
     @Temporal(TemporalType.TIME)
-    private Date dateFin;
+    private Date heureFin;
+    @Temporal(TemporalType.DATE)
+    private Date dateConsultation;
     @ManyToOne
     private Medium medium;
     @ManyToOne
@@ -42,9 +44,10 @@ public class Consultation implements Serializable {
     public Consultation() {
     }
 
-    public Consultation(Date dateDebut, Date dateFin, Medium medium, Employe employe, Client client, String commentaire) {
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
+    public Consultation(Date heureDebut, Date heureFin, Date dateConsultation, Medium medium, Employe employe, Client client, String commentaire) {
+        this.heureDebut = heureDebut;
+        this.heureFin = heureFin;
+        this.dateConsultation = dateConsultation;
         this.medium = medium;
         this.employe = employe;
         this.client = client;
@@ -55,12 +58,16 @@ public class Consultation implements Serializable {
         return id_consultation;
     }
 
-    public Date getDateDebut() {
-        return dateDebut;
+    public Date getHeureDebut() {
+        return heureDebut;
     }
 
-    public Date getDateFin() {
-        return dateFin;
+    public Date getHeureFin() {
+        return heureFin;
+    }
+
+    public Date getDateConsultation() {
+        return dateConsultation;
     }
 
     public Employe getEmploye() {
@@ -79,12 +86,16 @@ public class Consultation implements Serializable {
         return commentaire;
     }
 
-    public void setDateDebut(Date dateDeb) {
-        this.dateDebut = dateDeb;
+    public void setHeureDebut(Date heureDebut) {
+        this.heureDebut = heureDebut;
     }
 
-    public void setDateFin(Date dateFin) {
-        this.dateFin = dateFin;
+    public void setHeureFin(Date heureFin) {
+        this.heureFin = heureFin;
+    }
+
+    public void setDateConsultation(Date dateConsultation) {
+        this.dateConsultation = dateConsultation;
     }
 
     public void setEmploye(Employe employe) {
@@ -105,7 +116,7 @@ public class Consultation implements Serializable {
 
     @Override
     public String toString() {
-        return "Consultation{" + "id_consultation=" + id_consultation + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin + ", medium=" + medium + ", employe=" + employe + ", client=" + client + ", commentaire=" + commentaire + '}';
+        return "Consultation{" + "id_consultation=" + id_consultation + ", heureDebut=" + heureDebut + ", heureFin=" + heureFin + ", dateConsultation=" + dateConsultation + ", medium=" + medium + ", employe=" + employe + ", client=" + client + ", commentaire=" + commentaire + '}';
     }
     
 }
