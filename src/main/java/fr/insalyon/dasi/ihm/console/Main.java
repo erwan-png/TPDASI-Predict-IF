@@ -7,6 +7,7 @@ import fr.insalyon.dasi.metier.modele.Consultation;
 import fr.insalyon.dasi.metier.modele.Employe;
 import fr.insalyon.dasi.metier.modele.Medium;
 import fr.insalyon.dasi.metier.service.Service;
+import fr.insalyon.dasi.metier.service.ServiceOutils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,9 +24,9 @@ public class Main {
 
         JpaUtil.init();
         
-        //testerInscriptionClient();
-        //creerMediums();
-        //testEmp();
+        testerInscriptionClient();
+        creerMediums();
+        testEmp();
         
         //testerRechercheClient();
         //testerListeClients();
@@ -35,16 +36,17 @@ public class Main {
         //saisirRechercheClient();
         //testerObtenirPredictions();
 
-        //testerAjouterConsultation();
+        testerAjouterConsultation();
         
-        //testerTerminerConsultation();
+        testerTerminerConsultation();
         
         //testerEnvoieMail();
         //testerEnvoieNotification();
         
-        //testerTrouverEmployerNoteMaxi();
+        //testerDemanderMedium();
         
-        testerObtenirHistoriqueConsultationsClient();
+        //testerObtenirHistoriqueConsultationsClient();
+        testerobtenirStatistique();
 
         JpaUtil.destroy();
     }
@@ -345,6 +347,7 @@ public class Main {
         System.out.println("**** testerEnvoieMail() ****");
         System.out.println();
         
+        ServiceOutils serviceOutils = new ServiceOutils();
         Service service = new Service();
         long id;
         id = 1;
@@ -353,12 +356,12 @@ public class Main {
         System.out.println();
         System.out.println("**** Envoie Mail réussite Inscription ****");
         System.out.println();
-        service.genererMailClientSuccesInscription(client);
+        serviceOutils.genererMailClientSuccesInscription(client);
         
         System.out.println();
         System.out.println("**** Envoie Mail échec Inscription ****");
         System.out.println();
-        service.genererMailClientEchecInscription(client);
+        serviceOutils.genererMailClientEchecInscription(client);
         
         System.out.println();
         System.out.println("**** Fin ****");
@@ -371,6 +374,7 @@ public class Main {
         System.out.println();
         
         Service service = new Service();
+        ServiceOutils serviceOutils = new ServiceOutils();
         long id;
         id = 1;
         Client client = service.rechercherClientParId(id);
@@ -381,14 +385,14 @@ public class Main {
         System.out.println("**** Envoie Notification consultation ****");
         System.out.println();
         
-        service.genererNotificationClient(client, medium, employe);
+        serviceOutils.genererNotificationClient(client, medium, employe);
         
         System.out.println();
         System.out.println("**** Fin ****");
         System.out.println();
     }
     
-    public static void testerTrouverEmployerNoteMaxi() throws IOException, ParseException {
+    public static void testerDemanderMedium() throws IOException, ParseException {
         System.out.println();
         System.out.println("**** testerEnvoieMail() ****");
         System.out.println();
@@ -402,17 +406,22 @@ public class Main {
         testerAjouterConsultation();
         
         testerTerminerConsultation();
+        long id=1;
         
-        List<Employe> employesDispo = service.listerEmployeParPriorite('F');
+        Medium medium = service.rechercherMediumParId(id);
+        Client client = service.rechercherClientParId(id);
+        
+        Long id_employeChoisi = service.demanderMedium(client, medium);
         
         System.out.println();
         System.out.println("**** liste des Employes avec la note maximale****");
         System.out.println();
         
-        if(employesDispo !=null) {
-            employesDispo.forEach((employe) -> {
+        if(id_employeChoisi !=null) {
+            /*employesDispo.forEach((employe) -> {
                 afficherEmploye(employe);
-            });
+            });*/
+            afficherEmploye(service.rechercherEmployeParId(id_employeChoisi));
         } else {
             System.out.println("Aucun employé dispo");
         }
@@ -457,5 +466,17 @@ public class Main {
             System.out.println("**** Aucun résultat ****");
             System.out.println();
         }
+    }
+    
+    public static void testerobtenirStatistique() {
+        System.out.println();
+        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println();
+        
+        Service service = new Service();
+        long id;
+        id = 1;
+        
+        service.obtenirStatistique();
     }
 }

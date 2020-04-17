@@ -2,7 +2,9 @@ package fr.insalyon.dasi.dao;
 
 import fr.insalyon.dasi.metier.modele.Client;
 import fr.insalyon.dasi.metier.modele.Consultation;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -33,4 +35,15 @@ public class ConsultationDao {
         query.setParameter("client", client); 
         return query.getResultList();
     }
+    
+    public Map<Long,Integer> obtenirStatMedium(){
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        TypedQuery<Consultation> query = em.createQuery("SELECT count(c.medium) AS nbConsult, c.medium  FROM Consultation c GROUP BY c.medium.denomination", Consultation.class);
+        Map<Long,Integer> statMedium = new HashMap<>();
+        query.getResultList().forEach((c) -> {
+            System.out.println("Object" + c);
+            //statMedium.put(c.getMedium().getId(), query.getFirstResult());
+        });
+        return statMedium;
+    } 
 }

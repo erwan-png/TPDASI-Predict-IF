@@ -16,14 +16,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import fr.insalyon.dasi.util.AstroTest;
-import fr.insalyon.dasi.util.Message;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  *
  * @author DASI Team
@@ -39,6 +36,7 @@ public class Service {
     public Long inscrireClient(Client client) throws IOException {
         Long resultat = null;
         AstroTest profilAstro = new AstroTest();
+        ServiceOutils serviceOutils = new ServiceOutils();
         
         List<String> astroClient = profilAstro.getProfil(client.getPrenom(),client.getNaissance());
         client.getProfilAstro().setSigneZodiaque(astroClient.get(0));
@@ -49,9 +47,12 @@ public class Service {
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-            clientDao.creerClient(client);
+             Client client_existant = clientDao.chercherParMail(client.getMail());
+             if(client_existant == null) {
+                 clientDao.creerClient(client);
+                 resultat = client.getId();
+             }
             JpaUtil.validerTransaction();
-            resultat = client.getId();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
             JpaUtil.annulerTransaction();
@@ -59,6 +60,12 @@ public class Service {
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+        if(resultat!=null) {
+            serviceOutils.genererMailClientSuccesInscription(client);
+        } else {
+            serviceOutils.genererMailClientEchecInscription(client);
+        }
+        
         return resultat;
     }
 
@@ -174,24 +181,6 @@ public class Service {
         }
         return resultat;
     }
-    
-    public boolean estInscrit(String mail) {
-        boolean resultat = false;
-        JpaUtil.creerContextePersistance();
-        try {
-            // Recherche du client
-            Client client = clientDao.chercherParMail(mail);
-            if (client != null) {
-                resultat = true;
-            }
-        } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service estInscrit(mail)", ex);
-            resultat = false;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        return resultat;
-    }
 
     public List<String> obtenirPredictions(Client client, int[] notes) {
         List<String> resultat = null;
@@ -229,17 +218,17 @@ public class Service {
             Employe[] tab = new Employe[15];
             tab[0] = new Employe("Sierra", "Camilo", 'H', "csr@predictif.com", "123456","00 11 22 33 44 55", 0);
             tab[1] = new Employe("Versmee", "Erwan", 'H', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
-            tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "marico","00 11 22 33 44 60", 0);
-            tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "soygay","00 11 22 33 44 58", 0);
-            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "soyputo","00 11 22 33 44 59", 0);
+            tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "eqdqd","00 11 22 33 44 60", 0);
+            tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "qzdfqzdqz","00 11 22 33 44 58", 0);
+            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "qzdqdqzd","00 11 22 33 44 59", 0);
             tab[5] = new Employe("Dupont", "Paul", 'H', "pd@predictif.com", "hjvdfk","00 11 22 33 44 57", 0);
             tab[6] = new Employe("Duclos", "Florent", 'H', "fd@predictif.com", "cvkva","00 11 22 33 44 61", 0);
-            tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "mashallah","00 11 22 33 44 62", 0);
-            tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "tclmelochupa","00 11 22 33 44 63", 0);
-            tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "soymacoume","00 11 22 33 44 65", 0);
-            tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "soygay","00 11 22 33 44 66", 0);
+            tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "xqzzqfzf","00 11 22 33 44 62", 0);
+            tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "qzqzdqzd","00 11 22 33 44 63", 0);
+            tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "efqezd","00 11 22 33 44 64", 0);
+            tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "xqzzqdzw","00 11 22 33 44 64", 0);
+            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "qzqzqc","00 11 22 33 44 65", 0);
+            tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "zwdq","00 11 22 33 44 66", 0);
             tab[13] = new Employe("Tchounikinne", "Anne", 'F', "at@predictif.com", "gcsgos","00 11 22 33 44 67", 0);
             tab[14] = new Employe("Gripay", "Yann", 'H', "yg@predictif.com", "bfyusgvka","00 11 22 33 44 68", 0);
             //empDao.creerEmploye(camilo);
@@ -261,6 +250,30 @@ public class Service {
         return flag;
     }
     
+    public Long demanderMedium(Client client, Medium medium){
+        Long id = null;
+        ServiceOutils serviceOutils = new ServiceOutils();
+        
+        List<Employe> employesOK = null;
+        JpaUtil.creerContextePersistance();
+        
+        try {
+            employesOK = employeDao.listerEmployesParPriorite(medium.getGenre());
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium)", ex);
+            id = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        if(employesOK != null) {
+                id = employesOK.get(0).getId();
+                serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
+        }
+        
+        return id;
+    }
+    
     public Long commencerConsultation(Consultation consultation) throws IOException {
         Long id;
         consultation.getEmploye().setDisponibilite(false);
@@ -273,7 +286,6 @@ public class Service {
             employeDao.gererConsultation(consultation.getEmploye());
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
-            
             
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service commencerConsultation(consultation)", ex);
@@ -422,89 +434,6 @@ public class Service {
         return resultat;
     }
     
-    public List<Employe> listerEmployeParPriorite(char genre) {
-        List<Employe> employesOK = null;
-        JpaUtil.creerContextePersistance();
-        
-        try {
-            employesOK = employeDao.listerEmployesParPriorite(genre);
-        } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service listerEmployeParPriorite()", ex);
-            employesOK = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        if(employesOK!=null) {  
-            
-            int nbConsultMini=employesOK.get(0).getNbConsultations();
-            
-            for (int i=0;i<employesOK.size();i++) {
-                if (employesOK.get(i).getNbConsultations()<nbConsultMini) {
-                    nbConsultMini=employesOK.get(i).getNbConsultations();
-                }
-            }
-            
-            int taille = employesOK.size();
-            for (int i=0;i<taille;i++) {
-                if (employesOK.get(i).getNbConsultations()!=nbConsultMini) {
-                    employesOK.remove(i);
-                }
-            }
-        }
-        
-        return employesOK;
-    }
-    
-    public void genererMailClientSuccesInscription(Client client){
-        String mailExpediteur = "admin@predict.if";
-        String mailDestinataire = client.getMail();
-        String objet ="Bienvenue chez PREDICT’IF";
-        
-        StringWriter corps = new StringWriter();
-        PrintWriter mailWriter = new PrintWriter(corps);
-        
-        mailWriter.println("Bonjour "+ client.getPrenom() +", nous vous confirmons votre inscription au service PREDICT’IF.");
-        mailWriter.println("Rendez vous vite sur notre site pour consulter votre profil astrologique et profiter des dons incroyables de nos mediums");
-        
-        Message.envoyerMail(mailExpediteur,mailDestinataire,objet,corps.toString());
-    }
-    
-    public void genererMailClientEchecInscription(Client client){
-        String mailExpediteur = "admin@predict.if";
-        String mailDestinataire = client.getMail();
-        String objet ="Bienvenue chez PREDICT’IF";
-        
-        StringWriter corps = new StringWriter();
-        PrintWriter mailWriter = new PrintWriter(corps);
-        
-        mailWriter.println("Bonjour "+ client.getPrenom() +" votre inscription au service PREDICT’IF a malencontreusement échoué...");
-        mailWriter.println("Merci de recommencer ultérieurement");
-        
-        Message.envoyerMail(mailExpediteur,mailDestinataire,objet,corps.toString());
-    }
-    
-    public void genererNotificationClient(Client client, Medium medium, Employe employe){
-        String numeroTelClient = client.getNumeroTel();
-        
-        StringWriter message = new StringWriter();
-        PrintWriter notificationWriter = new PrintWriter(message);
-        
-        Date actuelle = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String date = dateFormat.format(actuelle);
-        
-        SimpleDateFormat heureFormat = new SimpleDateFormat("HH");
-        String heure = heureFormat.format(actuelle);
-        
-        SimpleDateFormat minuteFormat = new SimpleDateFormat("mm");
-        String minute = minuteFormat.format(actuelle);
-        
-        notificationWriter.println("Bonjour "+ client.getPrenom()+". J’ai bien reçu votre demande de consultation du " + date + " à " + heure +"h"+minute+".");
-        notificationWriter.println("Vous pouvez dès à présent me contacter au "+ employe.getNumeroTel() +". A tout de suite ! Médiumiquement vôtre, " + medium.getDenomination());
-        
-        Message.envoyerNotification(numeroTelClient,message.toString());
-    }
-    
     public List<Consultation> consulterHistoriqueConsultationClient(Client client) {
         List<Consultation> resultat = null;
         JpaUtil.creerContextePersistance();
@@ -518,5 +447,20 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return resultat;
+    }
+    
+    public Map<Long,Integer> obtenirStatistique() {
+        Map<Long,Integer> statMedium = new HashMap<>();
+        
+        JpaUtil.creerContextePersistance();
+        try {
+            statMedium = consultationDao.obtenirStatMedium();
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service obtenirStatistique()", ex);
+            statMedium = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return statMedium;
     }
 }
