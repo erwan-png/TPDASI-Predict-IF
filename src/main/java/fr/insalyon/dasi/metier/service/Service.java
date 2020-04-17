@@ -229,19 +229,19 @@ public class Service {
             Employe[] tab = new Employe[15];
             tab[0] = new Employe("Sierra", "Camilo", 'H', "csr@predictif.com", "123456","00 11 22 33 44 55", 0);
             tab[1] = new Employe("Versmee", "Erwan", 'H', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
-            tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "marico","00 11 22 33 44 60", 0);
-            tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "soygay","00 11 22 33 44 58", 0);
-            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "soyputo","00 11 22 33 44 59", 0);
-            tab[5] = new Employe("Dupont", "Paul", 'H', "pd@predictif.com", "hjvdfk","00 11 22 33 44 57", 0);
-            tab[6] = new Employe("Duclos", "Florent", 'H', "fd@predictif.com", "cvkva","00 11 22 33 44 61", 0);
-            tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "mashallah","00 11 22 33 44 62", 0);
-            tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "tclmelochupa","00 11 22 33 44 63", 0);
-            tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "soygay","00 11 22 33 44 64", 0);
-            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "soymacoume","00 11 22 33 44 65", 0);
-            tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "soygay","00 11 22 33 44 66", 0);
-            tab[13] = new Employe("Tchounikinne", "Anne", 'F', "at@predictif.com", "gcsgos","00 11 22 33 44 67", 0);
-            tab[14] = new Employe("Gripay", "Yann", 'H', "yg@predictif.com", "bfyusgvka","00 11 22 33 44 68", 0);
+            tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "nina","00 11 22 33 44 60", 0);
+            tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "andres","00 11 22 33 44 58", 0);
+            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "carlos","00 11 22 33 44 59", 0);
+            tab[5] = new Employe("Dupont", "Camille", 'F', "cd@predictif.com", "camille","00 11 22 33 44 57", 0);
+            tab[6] = new Employe("Orange", "Clementine", 'F', "oc@predictif.com", "clementine","00 11 22 33 44 61", 0);
+            tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "wissam","00 11 22 33 44 62", 0);
+            tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "sebastian","00 11 22 33 44 63", 0);
+            tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "jim","00 11 22 33 44 64", 0);
+            tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "baptiste","00 11 22 33 44 64", 0);
+            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "christopher","00 11 22 33 44 65", 0);
+            tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "matteo","00 11 22 33 44 66", 0);
+            tab[13] = new Employe("Johnson", "Ann", 'F', "aj@predictif.com", "ann","00 11 22 33 44 67", 0);
+            tab[14] = new Employe("Kessaria", "Douraya", 'F', "dk@predictif.com", "douraya","00 11 22 33 44 68", 0);
             //empDao.creerEmploye(camilo);
             for (int i=0;i<15;i++)
             {
@@ -341,29 +341,55 @@ public class Service {
         
         List<String> supportUn = new ArrayList<>();
         List<String> supportDeux = new ArrayList<>();
+        List<String> supportTrois = new ArrayList<>();
         supportUn.add("Boule de cristal");
         supportDeux.add("Marc de café");
-        supportDeux.add("Boule de crista");
+        supportDeux.add("Boule de cristal");
         supportDeux.add("Oreilles de lapin ");
+        supportTrois.add("Langue de renard");
             
-        Spirite spiriteUn = new Spirite(supportUn, "Gwenaëlle ",'F', "Spécialiste des grandes conversations au-delà de TOUTES les frontières.");
-        Spirite spiriteDeux = new Spirite(supportDeux, " Professeur Tran  ",'H', "Votre avenir est devant vous : regardons-le ensemble !");
+        Spirite spiriteUn = new Spirite(supportUn, "Gwenaëlle",'F', "Spécialiste des grandes conversations au-delà de TOUTES les frontières.");
+        Spirite spiriteDeux = new Spirite(supportDeux, "Professeur Tran",'H', "Votre avenir est devant vous : regardons-le ensemble !");
+        Spirite spiriteTrois = new Spirite(supportTrois, "Jean Philippe",'H', "Oui, j'utilise une langue de renard");
+        Spirite spiriteQuatre = new Spirite(supportUn, "Platon",'H', "Ce que je sais, c’est que je ne sais rien sur ton future oups");
+        Spirite spiriteCinq = new Spirite(supportUn, "William",'H', "Je ne sais plus quoi dire");
             
         Cartomancien cartomancienUn = new Cartomancien("Mme Irma",'F', "Comprenez votre entourage grâce à mes cartes ! Résultats rapides.");
         Cartomancien cartomancienDeux = new Cartomancien("Endora",'F', "Mes cartes répondront à toutes vos questions personnelles.");
+        Cartomancien cartomancienTrois = new Cartomancien("Gambit",'H', "Ma maitrisse des cartes dépasse les limites du compréhensible");
+        Cartomancien cartomancienQuatre = new Cartomancien("Cards",'H', "Bim Bam Boum Mes Cartes disent Bonjour");
+        Cartomancien cartomancienCinq = new Cartomancien("Ygritte",'H', "Si jamais les cartes disent ue tu mourra je ne te dirai pas ;)");
+        Cartomancien cartomancienSix = new Cartomancien("Victor Hugo",'H', "Le Bonheur est parfois caché sous mes cartes");
+        Cartomancien cartomancienSept = new Cartomancien("Descartes",'H', "Je connais ton futur, donc je suis");
             
         Astrologue astrologueUn = new Astrologue("École Normale Supérieure d’Astrologie (ENS-Astro)" , 2006,"Serena", 'F',"Basée à Champigny-sur-Marne, Serena vous révèlera votre avenir pour éclairer votre passé." );
-        Astrologue astrologueDeux = new Astrologue(" Institut des Nouveaux Savoirs Astrologiques" , 2010," Mr M ", 'H',"Avenir, avenir, que nous réserves-tu ? N'attendez plus, demandez à me consulter!" );
+        Astrologue astrologueDeux = new Astrologue("Institut des Nouveaux Savoirs Astrologiques" , 2010,"Mr M", 'H',"Avenir, avenir, que nous réserves-tu ? N'attendez plus, demandez à me consulter!" );
+        Astrologue astrologueTrois = new Astrologue("Harvard" , 2010,"Rajesh", 'H',"Les étoiles me parlent de toi tous les nuits!" );
+        Astrologue astrologueQuatre = new Astrologue("Grece" , -325,"Aristote", 'H',"L'ignorant affirme, le savant doute, le sage m'appelle" );
+        Astrologue astrologueCinq = new Astrologue("France" , 1905,"Sartre", 'H',"Dans la vie on ne fait pas ce que l'on veut mais ce que les étoiles disent" );
+        Astrologue astrologueSix = new Astrologue("Oui" , 1905,"Einstein", 'H',"La vie est comme une Byciclète, et moi je m'y connais" );
         
         try {
             
             JpaUtil.ouvrirTransaction();
             mediumDao.creerMedium(spiriteUn);
             mediumDao.creerMedium(spiriteDeux);
+            mediumDao.creerMedium(spiriteTrois);
+            mediumDao.creerMedium(spiriteQuatre);
+            mediumDao.creerMedium(spiriteCinq);
             mediumDao.creerMedium(cartomancienUn);
             mediumDao.creerMedium(cartomancienDeux);
+            mediumDao.creerMedium(cartomancienTrois);
+            mediumDao.creerMedium(cartomancienQuatre);
+            mediumDao.creerMedium(cartomancienCinq);
+            mediumDao.creerMedium(cartomancienSix);
+            mediumDao.creerMedium(cartomancienSept);
             mediumDao.creerMedium(astrologueUn);
             mediumDao.creerMedium(astrologueDeux);
+            mediumDao.creerMedium(astrologueTrois);
+            mediumDao.creerMedium(astrologueQuatre);
+            mediumDao.creerMedium(astrologueCinq);
+            mediumDao.creerMedium(astrologueSix);
             JpaUtil.validerTransaction();
             
             success = true;
