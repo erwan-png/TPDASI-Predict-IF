@@ -117,6 +117,21 @@ public class Service {
         }
         return resultat;
     }
+    
+    public Client trouverClient(String mail) {
+        Client resultat = null;
+        JpaUtil.creerContextePersistance();
+        try {
+            // Recherche du client
+            resultat = clientDao.chercherParMail(mail);
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service trouverClient(mail)", ex);
+            resultat = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return resultat;
+    }
 
     public Client authentifierClient(String mail, String motDePasse) {
         Client resultat = null;
@@ -386,6 +401,20 @@ public class Service {
             resultat = mediumDao.listerMediums();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service listerMediums()", ex);
+            resultat = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return resultat;
+    }
+    
+    public List<Employe> listerEmployes() {
+        List<Employe> resultat = null;
+        JpaUtil.creerContextePersistance();
+        try {
+            resultat = employeDao.listerEmployes();
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service listerEmployes()", ex);
             resultat = null;
         } finally {
             JpaUtil.fermerContextePersistance();
