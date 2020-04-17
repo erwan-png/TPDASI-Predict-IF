@@ -47,8 +47,27 @@ public class EmployeDao {
     public List<Employe> listerEmployesParPriorite(char genreMedium) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e WHERE e.genre =:genre AND e.disponibilite = 1 ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
-        query.setParameter("genre", genreMedium); 
-        return query.getResultList();
+        query.setParameter("genre", genreMedium);
+        List<Employe> employesOK = query.getResultList();
+        
+        if(employesOK!=null) {
+            
+            int nbConsultMini=employesOK.get(0).getNbConsultations();
+            
+            for (int i=0;i<employesOK.size();i++) {
+                if (employesOK.get(i).getNbConsultations()<nbConsultMini) {
+                    nbConsultMini=employesOK.get(i).getNbConsultations();
+                }
+            }
+            
+            int taille = employesOK.size();
+            for (int i=0;i<taille;i++) {
+                if (employesOK.get(i).getNbConsultations()!=nbConsultMini) {
+                    employesOK.remove(i);
+                }
+            }
+        }
+        return employesOK;
     }
         
     public void gererConsultation(Employe employe) {
