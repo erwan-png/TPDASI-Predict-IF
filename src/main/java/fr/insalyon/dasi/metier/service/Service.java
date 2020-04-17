@@ -269,6 +269,7 @@ public class Service {
         if(employesOK != null) {
                 id = employesOK.get(0).getId();
                 serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
+                serviceOutils.genererNotificationEmploye(client, medium, employesOK.get(0));
         }
         
         return id;
@@ -454,7 +455,7 @@ public class Service {
         
         JpaUtil.creerContextePersistance();
         try {
-            statMedium = consultationDao.obtenirStatMedium();
+            statMedium = mediumDao.obtenirStatMedium();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service obtenirStatistique()", ex);
             statMedium = null;

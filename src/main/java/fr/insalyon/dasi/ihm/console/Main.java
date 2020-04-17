@@ -470,7 +470,7 @@ public class Main {
     
     public static void testerobtenirStatistique() {
         System.out.println();
-        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println("**** testerobtenirStatistique() ****");
         System.out.println();
         
         Service service = new Service();
@@ -478,5 +478,9 @@ public class Main {
         id = 1;
         
         service.obtenirStatistique();
+        
+        System.out.println();
+        System.out.println("**** Fin testerobtenirStatistique ****");
+        System.out.println();
     }
 }

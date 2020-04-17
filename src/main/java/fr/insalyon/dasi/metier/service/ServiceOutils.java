@@ -64,4 +64,15 @@ public class ServiceOutils {
         
         Message.envoyerNotification(numeroTelClient,message.toString());
     }
+    
+    public void genererNotificationEmploye(Client client, Medium medium, Employe employe){
+        String numeroTelEmploye = employe.getNumeroTel();
+        
+        StringWriter message = new StringWriter();
+        PrintWriter notificationWriter = new PrintWriter(message);
+        
+        notificationWriter.println("Bonjour "+employe.getPrenom()+". Consultation requise pour Mme "+client.getPrenom()+" "+client.getNom()+". Médium à incarner : "+medium.getDenomination());
+        
+        Message.envoyerNotification(numeroTelEmploye,message.toString());
+    }
 }
