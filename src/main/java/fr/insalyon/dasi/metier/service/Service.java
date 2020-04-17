@@ -39,19 +39,23 @@ public class Service {
         ServiceOutils serviceOutils = new ServiceOutils();
         
         List<String> astroClient = profilAstro.getProfil(client.getPrenom(),client.getNaissance());
-        client.getProfilAstro().setSigneZodiaque(astroClient.get(0));
-        client.getProfilAstro().setSigneChinois(astroClient.get(1));
-        client.getProfilAstro().setCouleur(astroClient.get(2));
-        client.getProfilAstro().setAnimal(astroClient.get(3));
+        if(astroClient!=null){
+            client.getProfilAstro().setSigneZodiaque(astroClient.get(0));
+            client.getProfilAstro().setSigneChinois(astroClient.get(1));
+            client.getProfilAstro().setCouleur(astroClient.get(2));
+            client.getProfilAstro().setAnimal(astroClient.get(3));
+        } else {
+             client.getProfilAstro().setSigneZodiaque("sagittaire");
+             client.getProfilAstro().setSigneChinois("bouc");
+             client.getProfilAstro().setCouleur("vermeil");
+             client.getProfilAstro().setAnimal("ver de terre");
+        }
  
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-             Client client_existant = clientDao.chercherParMail(client.getMail());
-             if(client_existant == null) {
-                 clientDao.creerClient(client);
-                 resultat = client.getId();
-             }
+            clientDao.creerClient(client);
+            resultat = client.getId();
             JpaUtil.validerTransaction();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
@@ -210,7 +214,7 @@ public class Service {
     
 
     public boolean initialiserEmploye() throws IOException {
-        boolean flag = false; // 0 si tout ok
+        boolean flag = false;
         
         JpaUtil.creerContextePersistance();
         try {
@@ -227,11 +231,11 @@ public class Service {
             tab[8] = new Employe("Velasquez", "Sebastian", 'H', "sv@predictif.com", "sebastian","00 11 22 33 44 63", 0);
             tab[9] = new Employe("Eyraud", "Jim", 'H', "je@predictif.com", "jim","00 11 22 33 44 64", 0);
             tab[10] = new Employe("Frerot", "Baptise", 'H', "bf@predictif.com", "baptiste","00 11 22 33 44 64", 0);
-            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cd@predictif.com", "christopher","00 11 22 33 44 65", 0);
+            tab[11] = new Employe("Dultheo", "Christopher", 'H', "cdd@predictif.com", "christopher","00 11 22 33 44 65", 0);
             tab[12] = new Employe("Gineste", "Matteo", 'H', "mg@predictif.com", "matteo","00 11 22 33 44 66", 0);
             tab[13] = new Employe("Johnson", "Ann", 'F', "aj@predictif.com", "ann","00 11 22 33 44 67", 0);
             tab[14] = new Employe("Kessaria", "Douraya", 'F', "dk@predictif.com", "douraya","00 11 22 33 44 68", 0);
-            //empDao.creerEmploye(camilo);
+
             for (int i=0;i<15;i++)
             {
                 employeDao.creerEmploye(tab[i]);
@@ -377,7 +381,7 @@ public class Service {
             
         Astrologue astrologueUn = new Astrologue("École Normale Supérieure d’Astrologie (ENS-Astro)" , 2006,"Serena", 'F',"Basée à Champigny-sur-Marne, Serena vous révèlera votre avenir pour éclairer votre passé." );
         Astrologue astrologueDeux = new Astrologue("Institut des Nouveaux Savoirs Astrologiques" , 2010,"Mr M", 'H',"Avenir, avenir, que nous réserves-tu ? N'attendez plus, demandez à me consulter!" );
-        Astrologue astrologueTrois = new Astrologue("Harvard" , 2010,"Rajesh", 'H',"Les étoiles me parlent de toi tous les nuits!" );
+        Astrologue astrologueTrois = new Astrologue("Harvard" , 2010,"Rajesh", 'H',"Les étoiles me parlent de vous toutes les nuits!" );
         Astrologue astrologueQuatre = new Astrologue("Grece" , -325,"Aristote", 'H',"L'ignorant affirme, le savant doute, le sage m'appelle" );
         Astrologue astrologueCinq = new Astrologue("France" , 1905,"Sartre", 'H',"Dans la vie on ne fait pas ce que l'on veut mais ce que les étoiles disent" );
         Astrologue astrologueSix = new Astrologue("Oui" , 1905,"Einstein", 'H',"La vie est comme une Byciclète, et moi je m'y connais" );
@@ -476,9 +480,9 @@ public class Service {
         return resultat;
     }
     
-    public Map<Long,Integer> obtenirStatistique() {
+    public Map<Long,Integer> obtenirStatistiqueMedium() {
         Map<Long,Integer> statMedium = new HashMap<>();
-        
+
         JpaUtil.creerContextePersistance();
         try {
             statMedium = mediumDao.obtenirStatMedium();
@@ -489,5 +493,20 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return statMedium;
+    }
+    
+    public Map<Long,Integer> obtenirStatistiqueEmploye() {
+        Map<Long,Integer> statEmployes = new HashMap<>();
+
+        JpaUtil.creerContextePersistance();
+        try {
+            statEmployes = employeDao.obtenirStatEmploye();
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service obtenirStatistique()", ex);
+            statEmployes = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return statEmployes;
     }
 }

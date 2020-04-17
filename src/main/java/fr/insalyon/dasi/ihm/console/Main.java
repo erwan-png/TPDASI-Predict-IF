@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -46,7 +48,7 @@ public class Main {
         //testerDemanderMedium();
         
         //testerObtenirHistoriqueConsultationsClient();
-        testerobtenirStatistique();
+        testerObtenirStatistique();
 
         JpaUtil.destroy();
     }
@@ -93,11 +95,11 @@ public class Main {
         
         Service service = new Service();
         boolean flag = service.initialiserEmploye();
-        if (flag == true) {
+        /*if (flag == true) {
             System.out.println("> Succès inscription");
         } else {
             System.out.println("> Échec inscription");
-        }
+        }*/
     }
     
     public static void testerObtenirPredictions(){
@@ -137,6 +139,11 @@ public class Main {
         long id2 = 2;
         long id3 = 3;
         long id4 = 4;
+        long id5 = 5;
+        long id6 = 6;
+        long id7 = 7;
+        long id8 = 8;
+        long id9 = 9;
         SimpleDateFormat formatHeure = new SimpleDateFormat("hh-mm");
         SimpleDateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy");
         Date dateDebut = formatHeure.parse("17-05");
@@ -162,22 +169,50 @@ public class Main {
         Employe employe4 = service.rechercherEmployeParId(id4);
         Medium medium4 = service.rechercherMediumParId(id4);
         
+        Medium medium5 = service.rechercherMediumParId(id5);
+        Medium medium6 = service.rechercherMediumParId(id6);
+        Medium medium7 = service.rechercherMediumParId(id7);
+        Medium medium8 = service.rechercherMediumParId(id8);
+        
+        Employe employe5 = service.rechercherEmployeParId(id5);
+        Employe employe6 = service.rechercherEmployeParId(id6);
+        Employe employe7 = service.rechercherEmployeParId(id7);
+        Employe employe8 = service.rechercherEmployeParId(id8);
+        Employe employe9 = service.rechercherEmployeParId(id9);
+        
         Consultation c1 = new Consultation(dateDebut, null,date1, medium, employe, client,null);
         Consultation c2 = new Consultation(dateDebut2, null,date2, medium, employe2, client,null);
         Consultation c3 = new Consultation(dateDebut3, null,date3, medium, employe3, client,null);
-        Consultation c4 = new Consultation(dateDebut4, null,date4, medium4, employe4, client,null);
+        Consultation c4 = new Consultation(dateDebut4, null,date4, medium4, employe7, client,null);
+        Consultation c5 = new Consultation(dateDebut4, null,date4, medium5, employe8, client,null);
+        Consultation c6 = new Consultation(dateDebut4, null,date4, medium5, employe8, client,null);
+        Consultation c7 = new Consultation(dateDebut4, null,date4, medium4, employe2, client,null);
+        Consultation c8 = new Consultation(dateDebut4, null,date4, medium7, employe9, client,null);
+        Consultation c9 = new Consultation(dateDebut4, null,date4, medium8, employe4, client,null);
+        Consultation c10 = new Consultation(dateDebut4, null,date4, medium3, employe4, client,null);
+        Consultation c11 = new Consultation(dateDebut4, null,date4, medium2, employe2, client,null);
+        Consultation c12 = new Consultation(dateDebut4, null,date4, medium8, employe5, client,null);
+        
         
         Long idC1 = service.commencerConsultation(c1);
         Long idC2 = service.commencerConsultation(c2);
         Long idC3 = service.commencerConsultation(c3);
         Long idC4 = service.commencerConsultation(c4);
+        Long idC5 = service.commencerConsultation(c5);
+        Long idC6 = service.commencerConsultation(c6);
+        Long idC7 = service.commencerConsultation(c7);
+        Long idC8 = service.commencerConsultation(c8);
+        Long idC9 = service.commencerConsultation(c9);
+        Long idC10 = service.commencerConsultation(c10);
+        Long id11 = service.commencerConsultation(c11);
+        Long idC12 = service.commencerConsultation(c12);
         
-        if (idC1 != null) {
+        /*if (idC1 != null) {
             System.out.println("> Succès ajout");
         } else {
             System.out.println("> Échec ajout");
         }
-        afficherConsultation(c1);
+        afficherConsultation(c1);*/
     }
     
     public static void testerTerminerConsultation() throws ParseException, IOException {
@@ -191,6 +226,14 @@ public class Main {
         long id2=2;
         long id3=3;
         long id4=4;
+        long id5=5;
+        long id6=6;
+        long id7=7;
+        long id8=8;
+        long id9=9;
+        long id10=10;
+        long id11=11;
+        long id12=12;
         
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
         Date dateFin = format.parse("31-12-2009-17-25");
@@ -201,6 +244,14 @@ public class Main {
         Consultation consultation2 = service.rechercherConsultationParId(id2);
         Consultation consultation3 = service.rechercherConsultationParId(id3);
         Consultation consultation4 = service.rechercherConsultationParId(id4);
+        Consultation consultation5 = service.rechercherConsultationParId(id5);
+        Consultation consultation6 = service.rechercherConsultationParId(id6);
+        Consultation consultation7 = service.rechercherConsultationParId(id7);
+        Consultation consultation8 = service.rechercherConsultationParId(id8);
+        Consultation consultation9 = service.rechercherConsultationParId(id9);
+        Consultation consultation10 = service.rechercherConsultationParId(id10);
+        Consultation consultation11 = service.rechercherConsultationParId(id11);
+        Consultation consultation12 = service.rechercherConsultationParId(id12);
         
         if (consultation != null){
         
@@ -208,17 +259,26 @@ public class Main {
             Long id_test2 = service.terminerConsultation(consultation2, dateFin2);
             Long id_test3 = service.terminerConsultation(consultation3, dateFin3);
             Long id_test4 = service.terminerConsultation(consultation4, dateFin4);
+            Long id_test5 = service.terminerConsultation(consultation5, dateFin4);
+            Long id_test6 = service.terminerConsultation(consultation6, dateFin4);
+            Long id_test7 = service.terminerConsultation(consultation7, dateFin4);
+            Long id_test8 = service.terminerConsultation(consultation8, dateFin4);
+            Long id_test9 = service.terminerConsultation(consultation9, dateFin4);
+            Long id_test10 = service.terminerConsultation(consultation10, dateFin4);
+            Long id_test11 = service.terminerConsultation(consultation11, dateFin4);
+            Long id_test12 = service.terminerConsultation(consultation12, dateFin4);
+            
             
             Long id_1 = service.laisserCommentaire(consultation,"Client malpoli");
-            Long id_2 = service.laisserCommentaire(consultation,"Client malpoli");
-            Long id_3 = service.laisserCommentaire(consultation,"Client malpoli");
-            Long id_4 = service.laisserCommentaire(consultation,"Client malpoli");
+            Long id_2 = service.laisserCommentaire(consultation2,"Client malpoli");
+            Long id_3 = service.laisserCommentaire(consultation3,"Client malpoli");
+            Long id_4 = service.laisserCommentaire(consultation4,"Client malpoli");
         
-            if (id_test != null) {
+            /*if (id_test != null) {
                 System.out.println("> Succès fin de consultation");
             } else {
                 System.out.println("> Échec fin de consultation");
-            }
+            }*/
         } else {
             System.out.println("> Échec fin de consultation");
         }
@@ -468,7 +528,7 @@ public class Main {
         }
     }
     
-    public static void testerobtenirStatistique() {
+    public static void testerObtenirStatistique() {
         System.out.println();
         System.out.println("**** testerobtenirStatistique() ****");
         System.out.println();
@@ -476,8 +536,14 @@ public class Main {
         Service service = new Service();
         long id;
         id = 1;
+        //Map<Long,Integer> statMedium = new HashMap<>();
+        Map<Long,Integer> statEmploye = new HashMap<>();
         
-        service.obtenirStatistique();
+        //statMedium = service.obtenirStatistiqueMedium();
+        
+        //System.out.println(statMedium);
+        
+        statEmploye = service.obtenirStatistiqueEmploye();
         
         System.out.println();
         System.out.println("**** Fin testerobtenirStatistique ****");

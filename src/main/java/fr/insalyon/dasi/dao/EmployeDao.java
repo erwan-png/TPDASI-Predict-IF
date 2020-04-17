@@ -6,7 +6,13 @@
 package fr.insalyon.dasi.dao;
 
 import fr.insalyon.dasi.metier.modele.Employe;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import static java.util.stream.Collectors.toMap;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -73,5 +79,38 @@ public class EmployeDao {
     public void gererConsultation(Employe employe) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         em.merge(employe);
+    }
+    
+    public Map<Long,Integer> obtenirStatEmploye() {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        Map<Long,Integer> statEmploye = new HashMap<>();
+        
+        TypedQuery<Object[]> query = em.createQuery("SELECT e.nbConsultations, e.id  FROM Employe e", Object[].class);
+        List<Object[]> l = query.getResultList();
+        
+        l.forEach((e) -> {
+            Integer nbr = (int) e[0];
+            Long id = (long) e[1];
+            statEmploye.put(id,nbr);
+        });
+        
+        HashMap<Long, Integer> statEmployeSorted = statEmploye.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e1,LinkedHashMap::new));
+        Iterator it = statEmployeSorted.entrySet().iterator();
+        System.out.println(statEmployeSorted);
+        
+        int cmpt = 0; // pour les 5 premiers
+        while(it.hasNext()) {
+            if(cmpt>5){
+                it.remove();
+            }else {
+                cmpt++;
+            }
+            it.next();
+        }
+        if(cmpt>5){
+            it.remove();
+        }
+        System.out.println(statEmployeSorted);
+        return statEmployeSorted;
     }
 }

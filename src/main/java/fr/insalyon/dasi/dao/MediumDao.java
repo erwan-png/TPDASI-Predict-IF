@@ -1,6 +1,7 @@
 package fr.insalyon.dasi.dao;
 
 import fr.insalyon.dasi.metier.modele.Medium;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -42,16 +43,24 @@ public class MediumDao {
         l.forEach((c) -> {
             TypedQuery<Medium> query_id = em.createQuery("SELECT m FROM Medium m WHERE m.denomination =:denomination", Medium.class);
             query_id.setParameter("denomination", c[1]); 
-            //Long nbr = (Long)c[0];
             Integer nbr = (int) (long) c[0];
             statMedium.put(query_id.getSingleResult().getId(), nbr);
         });
-        System.out.println (statMedium);
         
-        HashMap<Long, Integer> collect = statMedium.entrySet().stream().sorted(comparingByValue()).collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,LinkedHashMap::new));
-
+        HashMap<Long, Integer> statMediumSorted = statMedium.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).collect(toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2,LinkedHashMap::new));
+        Iterator it = statMediumSorted.entrySet().iterator();
         
-        return statMedium;
+        /*int cmpt = 0; // pour les 5 premiers
+        while(it.hasNext()) {
+            if(cmpt>4){
+                it.remove();
+            }else {
+                cmpt++;
+            }
+            it.next();
+        }*/
+        
+        return statMediumSorted;
     } 
         
 }
