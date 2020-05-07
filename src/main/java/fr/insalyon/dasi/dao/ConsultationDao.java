@@ -33,4 +33,11 @@ public class ConsultationDao {
         query.setParameter("client", client); 
         return query.getResultList();
     }
+    
+    public Long trouverConsultationEnCours() {
+        EntityManager em = JpaUtil.obtenirContextePersistance();
+        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.heureDebut IS null", Consultation.class);
+        List<Consultation> result = query.getResultList();
+        return result.get(0).getId_consultation();
+    }
 }

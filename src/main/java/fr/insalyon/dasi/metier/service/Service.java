@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import fr.insalyon.dasi.util.AstroTest;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -224,7 +225,7 @@ public class Service {
             tab[1] = new Employe("Versmee", "Erwan", 'H', "ev@predictif.com", "654321","00 11 22 33 44 56", 0);
             tab[2] = new Employe("Crouzet", "Nina", 'F', "nc@predictif.com", "nina","00 11 22 33 44 60", 0);
             tab[3] = new Employe("Ragot", "Andres", 'H', "ar@predictif.com", "andres","00 11 22 33 44 58", 0);
-            tab[4] = new Employe("Cohen", "Carlos", 'H', "cc@predictif.com", "carlos","00 11 22 33 44 59", 0);
+            tab[4] = new Employe("Roquet", "Lily", 'F', "rli@predictif.com", "carlos","00 11 22 33 44 59", 0);
             tab[5] = new Employe("Dupont", "Camille", 'F', "cd@predictif.com", "camille","00 11 22 33 44 57", 0);
             tab[6] = new Employe("Orange", "Clementine", 'F', "oc@predictif.com", "clementine","00 11 22 33 44 61", 0);
             tab[7] = new Employe("Ajami", "Wissam", 'H', "wa@predictif.com", "wissam","00 11 22 33 44 62", 0);
@@ -274,6 +275,27 @@ public class Service {
                 id = employesOK.get(0).getId();
                 serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
                 serviceOutils.genererNotificationEmploye(client, medium, employesOK.get(0));
+                
+                employesOK.get(0).setDisponibilite(false);
+                employesOK.get(0).setNbConsultations(employesOK.get(0).getNbConsultations()+1);
+                
+                Date date = new java.util.Date(); 
+                 
+                Consultation consultation = new Consultation(null, null,date, medium, employesOK.get(0), client,null);             
+                try {
+                    JpaUtil.ouvrirTransaction();
+                    employeDao.gererConsultation(employesOK.get(0));
+                    consultationDao.creerConsultation(consultation);
+                    JpaUtil.validerTransaction();
+            
+                } catch (Exception ex) {
+                    Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium) (modification de l'employé)", ex);
+                    JpaUtil.annulerTransaction();
+                    id = null;
+                    employesOK.get(0).setDisponibilite(true);
+                } finally {
+                    JpaUtil.fermerContextePersistance();
+            }
         }
         
         return id;
@@ -281,21 +303,35 @@ public class Service {
     
     public Long commencerConsultation(Consultation consultation) throws IOException {
         Long id;
-        consultation.getEmploye().setDisponibilite(false);
-        consultation.getEmploye().setNbConsultations(consultation.getEmploye().getNbConsultations()+1);
         
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-            consultationDao.creerConsultation(consultation);
-            employeDao.gererConsultation(consultation.getEmploye());
+            consultationDao.modifierConsultation(consultation);
             JpaUtil.validerTransaction();
             id = consultation.getId_consultation();
             
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service commencerConsultation(consultation)", ex);
             JpaUtil.annulerTransaction();
-            consultation.getEmploye().setDisponibilite(true);
+            id = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        return id;
+    }
+    
+    public Long trouverConsultationEnCours() {
+        Long id;
+        
+        JpaUtil.creerContextePersistance();
+        try {
+            JpaUtil.ouvrirTransaction();
+            id = consultationDao.trouverConsultationEnCours();
+            JpaUtil.validerTransaction();            
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service trouverConsultationEnCours()", ex);
+            JpaUtil.annulerTransaction();
             id = null;
         } finally {
             JpaUtil.fermerContextePersistance();
