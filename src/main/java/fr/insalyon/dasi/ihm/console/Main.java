@@ -26,9 +26,11 @@ public class Main {
 
         JpaUtil.init();
         
-        testerInscriptionClient();
-        creerMediums();
-        testEmp();
+        initialisation();
+        
+        //testerInscriptionClient();
+        //creerMediums();
+        //testEmp();
         
         //testerRechercheClient();
         //testerListeClients();
@@ -38,9 +40,9 @@ public class Main {
         //saisirRechercheClient();
         //testerObtenirPredictions();
 
-        testerAjouterConsultation();
+        //testerAjouterConsultation();
         
-        testerTerminerConsultation();
+        //testerTerminerConsultation();
         
         //testerEnvoieMail();
         //testerEnvoieNotification();
@@ -48,7 +50,7 @@ public class Main {
         //testerDemanderMedium();
         
         //testerObtenirHistoriqueConsultationsClient();
-        testerObtenirStatistique();
+        //testerObtenirStatistique();
 
         JpaUtil.destroy();
     }
@@ -63,6 +65,20 @@ public class Main {
     
     public static void afficherConsultation(Consultation consultation) {
         System.out.println("-> " + consultation);
+    }
+    
+    public static void initialisation() throws IOException {
+        System.out.println();
+        System.out.println("**** initialisation() ****");
+        System.out.println();
+        Service service = new Service();
+        
+        service.initialiserEmploye();
+        service.initialiserMediums();
+        
+        System.out.println();
+        System.out.println("****Fin initialisation() ****");
+        System.out.println();
     }
 
     public static void testerInscriptionClient() throws ParseException, IOException {
