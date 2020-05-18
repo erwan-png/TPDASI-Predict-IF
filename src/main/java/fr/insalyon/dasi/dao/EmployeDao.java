@@ -52,12 +52,11 @@ public class EmployeDao {
     
     public List<Employe> listerEmployesParPriorite(char genreMedium) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e WHERE e.genre =:genre AND e.disponibilite = 1 ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
-        query.setParameter("genre", genreMedium);
+        TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e WHERE e.genre = :genreMed AND e.disponibilite = 1 ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
+        query.setParameter("genreMed", genreMedium);
         List<Employe> employesOK = query.getResultList();
         
-        if(employesOK!=null) {
-            
+        if(!employesOK.isEmpty()) {
             int nbConsultMini=employesOK.get(0).getNbConsultations();
             
             for (int i=0;i<employesOK.size();i++) {
