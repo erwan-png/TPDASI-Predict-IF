@@ -2,6 +2,7 @@ package fr.insalyon.dasi.dao;
 
 import fr.insalyon.dasi.metier.modele.Client;
 import fr.insalyon.dasi.metier.modele.Consultation;
+import fr.insalyon.dasi.metier.modele.Employe;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -34,10 +35,20 @@ public class ConsultationDao {
         return query.getResultList();
     }
     
-    public Long trouverConsultationEnCours() {
+    public Long trouverConsultationEnCours(Employe employe) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.heureDebut IS null", Consultation.class);
+        Long id = null;
+        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.heureDebut IS null AND c.employe =:employe", Consultation.class);
+        query.setParameter("employe", employe);
         List<Consultation> result = query.getResultList();
-        return result.get(0).getId_consultation();
+        /*result.forEach((consult) ->{
+            if(consult.getEmploye()!=employe){
+                result.remove(consult);
+            }
+        });*/
+        if(!result.isEmpty()) {
+           id = result.get(0).getId_consultation();
+        }
+        return id;
     }
 }

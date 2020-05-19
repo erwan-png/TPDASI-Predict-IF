@@ -26,8 +26,9 @@ public class Main {
 
         JpaUtil.init();
         
-        initialisation();
+        //initialisation();
         
+        trouverConsultationEnCours();
         //testerInscriptionClient();
         //creerMediums();
         //testEmp();
@@ -78,6 +79,28 @@ public class Main {
         
         System.out.println();
         System.out.println("****Fin initialisation() ****");
+        System.out.println();
+    }
+    
+    public static void trouverConsultationEnCours() throws IOException {
+        System.out.println();
+        System.out.println("**** trouverConsultationEnCours() ****");
+        System.out.println();
+        Service service = new Service();
+        long id =10;
+        Employe employe = service.rechercherEmployeParId(id);
+        Long id_consultation = service.trouverConsultationEnCours(employe);
+        
+        if(id_consultation!=null){
+            System.out.println("id_consultation "+id_consultation);
+            Consultation c = service.rechercherConsultationParId(id_consultation);
+            afficherConsultation(c);
+        } else {
+            System.out.println("Aucune consultation en cours");
+        }
+        
+        System.out.println();
+        System.out.println("****Fin trouverConsultationEnCours() ****");
         System.out.println();
     }
 

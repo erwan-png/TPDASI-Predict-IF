@@ -317,13 +317,12 @@ public class Service {
         return id;
     }
     
-    public Long trouverConsultationEnCours() {
+    public Long trouverConsultationEnCours(Employe employe) {
         Long id;
-        
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
-            id = consultationDao.trouverConsultationEnCours();
+            id = consultationDao.trouverConsultationEnCours(employe);
             JpaUtil.validerTransaction();            
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service trouverConsultationEnCours()", ex);
