@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import fr.insalyon.dasi.util.AstroTest;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -264,14 +263,7 @@ public class Service {
         
         try {
             employesOK = employeDao.listerEmployesParPriorite(medium.getGenre());
-        } catch (Exception ex) {
-            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium)", ex);
-            id = null;
-        } finally {
-            JpaUtil.fermerContextePersistance();
-        }
-        
-        if(employesOK != null) {
+            if(!employesOK.isEmpty()) {
                 id = employesOK.get(0).getId();
                 serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
                 serviceOutils.genererNotificationEmploye(client, medium, employesOK.get(0));
@@ -293,9 +285,13 @@ public class Service {
                     JpaUtil.annulerTransaction();
                     id = null;
                     employesOK.get(0).setDisponibilite(true);
-                } finally {
-                    JpaUtil.fermerContextePersistance();
+                }
             }
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium)", ex);
+            id = null;
+        } finally {
+            JpaUtil.fermerContextePersistance();
         }
         
         return id;

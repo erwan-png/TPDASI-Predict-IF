@@ -471,22 +471,23 @@ public class Main {
     
     public static void testerDemanderMedium() throws IOException, ParseException {
         System.out.println();
-        System.out.println("**** testerEnvoieMail() ****");
+        System.out.println("**** testerDemanderMedium() ****");
         System.out.println();
         
         Service service = new Service();
         
-        creerMediums();
+        /*creerMediums();
         testerInscriptionClient();
         testEmp();
         
         testerAjouterConsultation();
         
-        testerTerminerConsultation();
-        long id=1;
+        testerTerminerConsultation();*/
+        long id=8;
+        long id1 = 1;
         
         Medium medium = service.rechercherMediumParId(id);
-        Client client = service.rechercherClientParId(id);
+        Client client = service.rechercherClientParId(id1);
         
         Long id_employeChoisi = service.demanderMedium(client, medium);
         
