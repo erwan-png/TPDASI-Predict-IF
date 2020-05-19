@@ -75,7 +75,7 @@ public class Main {
         
         //service.initialiserEmploye();
         //service.initialiserMediums();
-        testerInscriptionClient();
+        //testerInscriptionClient();
         
         System.out.println();
         System.out.println("****Fin initialisation() ****");
