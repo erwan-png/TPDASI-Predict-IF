@@ -10,10 +10,10 @@
     <class>fr.insalyon.dasi.metier.modele.Spirite</class>
     <class>fr.insalyon.dasi.metier.modele.Client</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/PredictIF"/>
-      <property name="javax.persistence.jdbc.user" value="eversmee"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/Predictif"/>
+      <property name="javax.persistence.jdbc.user" value="camilo"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="b3114"/>
+      <property name="javax.persistence.jdbc.password" value="camilo"/>
       <property name="javax.persistence.schema-generation.database.action" value="create"/> 
     </properties>
   </persistence-unit>
