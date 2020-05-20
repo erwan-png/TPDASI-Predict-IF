@@ -28,7 +28,9 @@ public class Main {
         
         //initialisation();
         
+        //testerFinConsult();
         trouverConsultationEnCours();
+        
         //testerInscriptionClient();
         //creerMediums();
         //testEmp();
@@ -74,12 +76,35 @@ public class Main {
         System.out.println();
         Service service = new Service();
         
-        //service.initialiserEmploye();
-        //service.initialiserMediums();
+        service.initialiserEmploye();
+        service.initialiserMediums();
         //testerInscriptionClient();
         
         System.out.println();
         System.out.println("****Fin initialisation() ****");
+        System.out.println();
+    }
+    
+    public static void testerFinConsult() throws IOException {
+        System.out.println();
+        System.out.println("**** testerFinConsult() ****");
+        System.out.println();
+        Service service = new Service();
+        long id =8;
+        Consultation consultation = service.rechercherConsultationParId(id);
+        afficherConsultation(consultation);
+        
+        Long id_consultation = service.terminerConsultation(consultation);
+        
+        if(id_consultation!=null){
+            System.out.println("id_consultation "+id_consultation);
+            afficherConsultation(consultation);
+        } else {
+            System.out.println("Aucune consultation en cours");
+        }
+        
+        System.out.println();
+        System.out.println("****Fin testerFinConsult() ****");
         System.out.println();
     }
     
@@ -88,8 +113,9 @@ public class Main {
         System.out.println("**** trouverConsultationEnCours() ****");
         System.out.println();
         Service service = new Service();
-        long id =10;
+        long id =2;
         Employe employe = service.rechercherEmployeParId(id);
+        afficherEmploye(employe);
         Long id_consultation = service.trouverConsultationEnCours(employe);
         
         if(id_consultation!=null){
@@ -276,10 +302,6 @@ public class Main {
         long id12=12;
         
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
-        Date dateFin = format.parse("31-12-2009-17-25");
-        Date dateFin2 = format.parse("08-12-2011-13-34");
-        Date dateFin3 = format.parse("08-04-2012-14-55");
-        Date dateFin4= format.parse("08-12-2012-09-24");
         Consultation consultation = service.rechercherConsultationParId(id);
         Consultation consultation2 = service.rechercherConsultationParId(id2);
         Consultation consultation3 = service.rechercherConsultationParId(id3);
@@ -295,18 +317,18 @@ public class Main {
         
         if (consultation != null){
         
-            Long id_test = service.terminerConsultation(consultation, dateFin);
-            Long id_test2 = service.terminerConsultation(consultation2, dateFin2);
-            Long id_test3 = service.terminerConsultation(consultation3, dateFin3);
-            Long id_test4 = service.terminerConsultation(consultation4, dateFin4);
-            Long id_test5 = service.terminerConsultation(consultation5, dateFin4);
-            Long id_test6 = service.terminerConsultation(consultation6, dateFin4);
-            Long id_test7 = service.terminerConsultation(consultation7, dateFin4);
-            Long id_test8 = service.terminerConsultation(consultation8, dateFin4);
-            Long id_test9 = service.terminerConsultation(consultation9, dateFin4);
-            Long id_test10 = service.terminerConsultation(consultation10, dateFin4);
-            Long id_test11 = service.terminerConsultation(consultation11, dateFin4);
-            Long id_test12 = service.terminerConsultation(consultation12, dateFin4);
+            Long id_test = service.terminerConsultation(consultation);
+            Long id_test2 = service.terminerConsultation(consultation2);
+            Long id_test3 = service.terminerConsultation(consultation3);
+            Long id_test4 = service.terminerConsultation(consultation4);
+            Long id_test5 = service.terminerConsultation(consultation5);
+            Long id_test6 = service.terminerConsultation(consultation6);
+            Long id_test7 = service.terminerConsultation(consultation7);
+            Long id_test8 = service.terminerConsultation(consultation8);
+            Long id_test9 = service.terminerConsultation(consultation9);
+            Long id_test10 = service.terminerConsultation(consultation10);
+            Long id_test11 = service.terminerConsultation(consultation11);
+            Long id_test12 = service.terminerConsultation(consultation12);
             
             
             Long id_1 = service.laisserCommentaire(consultation,"Client malpoli");
@@ -515,7 +537,7 @@ public class Main {
         Long id_employeChoisi = service.demanderMedium(client, medium);
         
         System.out.println();
-        System.out.println("**** liste des Employes avec la note maximale****");
+        System.out.println("****Employe choisi****");
         System.out.println();
         
         if(id_employeChoisi !=null) {

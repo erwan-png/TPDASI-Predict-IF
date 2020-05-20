@@ -38,7 +38,7 @@ public class ConsultationDao {
     public Long trouverConsultationEnCours(Employe employe) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
         Long id = null;
-        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.heureDebut IS null AND c.employe =:employe", Consultation.class);
+        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE (c.heureDebut IS null OR c.heureFin IS null) AND c.employe =:employe", Consultation.class);
         query.setParameter("employe", employe);
         List<Consultation> result = query.getResultList();
         /*result.forEach((consult) ->{

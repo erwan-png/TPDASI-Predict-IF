@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import fr.insalyon.dasi.util.AstroTest;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -270,10 +272,8 @@ public class Service {
                 
                 employesOK.get(0).setDisponibilite(false);
                 employesOK.get(0).setNbConsultations(employesOK.get(0).getNbConsultations()+1);
-                
-                Date date = new java.util.Date(); 
-                 
-                Consultation consultation = new Consultation(null, null,date, medium, employesOK.get(0), client,null);             
+                                 
+                Consultation consultation = new Consultation(null, null,null, medium, employesOK.get(0), client,null);             
                 try {
                     JpaUtil.ouvrirTransaction();
                     employeDao.gererConsultation(employesOK.get(0));
@@ -299,6 +299,15 @@ public class Service {
     
     public Long commencerConsultation(Consultation consultation) throws IOException {
         Long id;
+        DateFormat formatHeure = new SimpleDateFormat("HH:mm");
+        DateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+        Date heure = new Date();
+        Date date = new Date();
+        formatHeure.format(heure);
+        formatDate.format(date);
+        
+        consultation.setHeureDebut(heure);
+        consultation.setDateConsultation(date);
         
         JpaUtil.creerContextePersistance();
         try {
@@ -334,10 +343,15 @@ public class Service {
         return id;
     }
     
-    public Long terminerConsultation(Consultation consultation, Date heureFin ) throws IOException {
+    public Long terminerConsultation(Consultation consultation) throws IOException {
         Long id;
         consultation.getEmploye().setDisponibilite(true);
-        consultation.setHeureFin(heureFin);
+        
+        DateFormat formatHeure = new SimpleDateFormat("HH:mm");
+        Date heure = new Date();
+        formatHeure.format(heure);
+        
+        consultation.setHeureFin(heure);
         
         JpaUtil.creerContextePersistance();
         
@@ -403,14 +417,14 @@ public class Service {
         Spirite spiriteDeux = new Spirite(supportDeux, "Professeur Tran",'H', "Votre avenir est devant vous : regardons-le ensemble !");
         Spirite spiriteTrois = new Spirite(supportTrois, "Jean Philippe",'H', "Oui, j'utilise une langue de renard");
         Spirite spiriteQuatre = new Spirite(supportUn, "Platon",'H', "Ce que je sais, c’est que je ne sais rien sur ton future oups");
-        Spirite spiriteCinq = new Spirite(supportUn, "William",'H', "Je ne sais plus quoi dire");
+        Spirite spiriteCinq = new Spirite(supportUn, "William",'H', "Votre belle-mère est insupportable ? J'ai la solution");
         Spirite spiriteSix = new Spirite(supportQuatre, "Gwenda",'F', "Je peux lire vos lignes de la main par téléphone");
             
         Cartomancien cartomancienUn = new Cartomancien("Mme Irma",'F', "Comprenez votre entourage grâce à mes cartes ! Résultats rapides.");
         Cartomancien cartomancienDeux = new Cartomancien("Endora",'F', "Mes cartes répondront à toutes vos questions personnelles.");
         Cartomancien cartomancienTrois = new Cartomancien("Gambit",'F', "Ma maîtrise des cartes dépasse les limites du compréhensible");
         Cartomancien cartomancienQuatre = new Cartomancien("Cards",'F', "Bim Bam Boum Mes Cartes disent Bonjour");
-        Cartomancien cartomancienCinq = new Cartomancien("Ygritte",'H', "Si jamais les cartes disent ue tu mourra je ne te dirai pas ;)");
+        Cartomancien cartomancienCinq = new Cartomancien("Ygritte",'H', "OMG !!! Je révèle l'avenir de la France ça tourne mal");
         Cartomancien cartomancienSix = new Cartomancien("Victor Hugo",'H', "Le Bonheur est parfois caché sous mes cartes");
         Cartomancien cartomancienSept = new Cartomancien("Descartes",'H', "Je connais ton futur, donc je suis");
         Cartomancien cartomancienHuit = new Cartomancien("Hodor",'H', "Hodor");

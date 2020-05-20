@@ -65,8 +65,7 @@ public class EmployeDao {
                 }
             }
             
-            int taille = employesOK.size();
-            for (int i=0;i<taille;i++) {
+            for (int i=0;i<employesOK.size();i++) {
                 if (employesOK.get(i).getNbConsultations()!=nbConsultMini) {
                     employesOK.remove(i);
                 }
