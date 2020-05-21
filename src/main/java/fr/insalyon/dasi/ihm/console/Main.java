@@ -28,9 +28,11 @@ public class Main {
         
         //initialisation();
         
+        testerLaisserCommentaire();
         //testerFinConsult();
-        trouverConsultationEnCours();
+        //trouverConsultationEnCours();
         
+        //testerObtenirConsultationSansCommentaire();
         //testerInscriptionClient();
         //creerMediums();
         //testEmp();
@@ -68,6 +70,50 @@ public class Main {
     
     public static void afficherConsultation(Consultation consultation) {
         System.out.println("-> " + consultation);
+    }
+    
+    public static void testerLaisserCommentaire() throws IOException {
+        System.out.println();
+        System.out.println("**** testerLaisserCommentaire() ****");
+        System.out.println();
+        Service service = new Service();
+        
+        long id =8;
+        Consultation consultation = service.rechercherConsultationParId(id);
+        afficherConsultation(consultation);
+
+        service.laisserCommentaire(consultation, "Client exécrable");
+        
+        afficherConsultation(consultation);
+        
+        System.out.println();
+        System.out.println("****Fin testerLaisserCommentaire() ****");
+        System.out.println();
+    }
+    
+    public static void testerObtenirConsultationSansCommentaire() {
+        System.out.println();
+        System.out.println("**** testerObtenirConsultationSansCommentaire() ****");
+        System.out.println();
+        Service service = new Service();
+        
+        long id =2;
+        
+        Employe employe = service.rechercherEmployeParId(id);
+        afficherEmploye(employe);
+        List<Consultation> resultat = service.obtenirConsultationSansCommentaire(employe);
+        
+        if(!resultat.isEmpty()){
+            resultat.forEach((c) -> {
+                afficherConsultation(c);
+            });
+        } else {
+            System.out.println("Aucune consultation sans commentaire");
+        }
+        
+        System.out.println();
+        System.out.println("****Fin testerObtenirConsultationSansCommentaire() ****");
+        System.out.println();
     }
     
     public static void initialisation() throws IOException {
@@ -143,7 +189,7 @@ public class Main {
         Adresse adresse = new Adresse("15 rue de la république","69000","Lyon");
         
         Service service = new Service();
-        Client claude = new Client("claude.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR","05 04 65 88 29");
+        Client claude = new Client("claopde.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR","05 04 65 88 29");
         Long idClaude = service.inscrireClient(claude);
         if (idClaude != null) {
             System.out.println("> Succès inscription");
@@ -612,4 +658,5 @@ public class Main {
         System.out.println("**** Fin testerobtenirStatistique ****");
         System.out.println();
     }
+
 }

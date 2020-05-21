@@ -47,17 +47,16 @@ public class Service {
             client.getProfilAstro().setCouleur(astroClient.get(2));
             client.getProfilAstro().setAnimal(astroClient.get(3));
         } else {
-             client.getProfilAstro().setSigneZodiaque("sagittaire");
-             client.getProfilAstro().setSigneChinois("bouc");
-             client.getProfilAstro().setCouleur("vermeil");
-             client.getProfilAstro().setAnimal("ver de terre");
+             client.getProfilAstro().setSigneZodiaque("Sagittaire");
+             client.getProfilAstro().setSigneChinois("Bouc");
+             client.getProfilAstro().setCouleur("Vermeil");
+             client.getProfilAstro().setAnimal("Ver de terre");
         }
  
         JpaUtil.creerContextePersistance();
         try {
             JpaUtil.ouvrirTransaction();
             clientDao.creerClient(client);
-            resultat = client.getId();
             JpaUtil.validerTransaction();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service inscrireClient(client)", ex);
@@ -66,6 +65,8 @@ public class Service {
         } finally {
             JpaUtil.fermerContextePersistance();
         }
+        resultat = client.getId();
+
         if(resultat!=null) {
             serviceOutils.genererMailClientSuccesInscription(client);
         } else {
@@ -371,6 +372,25 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         return id;
+    }
+    public List<Consultation> obtenirConsultationSansCommentaire(Employe employe) {
+        List<Consultation> result = null;
+        
+         JpaUtil.creerContextePersistance();
+        
+        try {
+            JpaUtil.ouvrirTransaction();
+            result = consultationDao.trouverConsultationSansCommentaire(employe);
+            JpaUtil.validerTransaction();
+            
+        } catch (Exception ex) {
+            Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service obtenirConsultationSansCommentaire(employe)", ex);
+            JpaUtil.annulerTransaction();
+        } finally {
+            JpaUtil.fermerContextePersistance();
+        }
+        
+        return result;
     }
     
     public Long laisserCommentaire(Consultation consultation, String commentaire) throws IOException {
