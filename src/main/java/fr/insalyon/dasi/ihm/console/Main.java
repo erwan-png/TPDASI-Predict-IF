@@ -26,9 +26,9 @@ public class Main {
 
         JpaUtil.init();
         
-        //initialisation();
+        initialisation();
         
-        testerLaisserCommentaire();
+        //testerLaisserCommentaire();
         //testerFinConsult();
         //trouverConsultationEnCours();
         
@@ -574,7 +574,7 @@ public class Main {
         testerAjouterConsultation();
         
         testerTerminerConsultation();*/
-        long id=8;
+        long id=7;
         long id1 = 1;
         
         Medium medium = service.rechercherMediumParId(id);

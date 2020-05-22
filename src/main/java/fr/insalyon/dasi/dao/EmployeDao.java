@@ -6,6 +6,7 @@
 package fr.insalyon.dasi.dao;
 
 import fr.insalyon.dasi.metier.modele.Employe;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,23 +56,23 @@ public class EmployeDao {
         TypedQuery<Employe> query = em.createQuery("SELECT e FROM Employe e WHERE e.genre = :genreMed AND e.disponibilite = 1 ORDER BY e.nom ASC, e.prenom ASC", Employe.class);
         query.setParameter("genreMed", genreMedium);
         List<Employe> employesOK = query.getResultList();
-        
+        List<Employe> employeNoteMaxi = new ArrayList<>();
         if(!employesOK.isEmpty()) {
             int nbConsultMini=employesOK.get(0).getNbConsultations();
             
             for (int i=0;i<employesOK.size();i++) {
                 if (employesOK.get(i).getNbConsultations()<nbConsultMini) {
                     nbConsultMini=employesOK.get(i).getNbConsultations();
+                    System.out.println("nbr Consult mini" + nbConsultMini);
                 }
             }
-            
             for (int i=0;i<employesOK.size();i++) {
-                if (employesOK.get(i).getNbConsultations()!=nbConsultMini) {
-                    employesOK.remove(i);
+                if (employesOK.get(i).getNbConsultations()==nbConsultMini) {
+                    employeNoteMaxi.add(employesOK.get(i));
                 }
             }
         }
-        return employesOK;
+        return employeNoteMaxi;
     }
         
     public void gererConsultation(Employe employe) {

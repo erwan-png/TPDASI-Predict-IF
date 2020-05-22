@@ -259,35 +259,15 @@ public class Service {
     
     public Long demanderMedium(Client client, Medium medium){
         Long id = null;
+        Boolean clientConsultEnCours=false;
         ServiceOutils serviceOutils = new ServiceOutils();
         
         List<Employe> employesOK = null;
         JpaUtil.creerContextePersistance();
-        
         try {
-            employesOK = employeDao.listerEmployesParPriorite(medium.getGenre());
-            if(!employesOK.isEmpty()) {
-                id = employesOK.get(0).getId();
-                serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
-                serviceOutils.genererNotificationEmploye(client, medium, employesOK.get(0));
-                
-                employesOK.get(0).setDisponibilite(false);
-                employesOK.get(0).setNbConsultations(employesOK.get(0).getNbConsultations()+1);
-                                 
-                Consultation consultation = new Consultation(null, null,null, medium, employesOK.get(0), client,null);             
-                try {
-                    JpaUtil.ouvrirTransaction();
-                    employeDao.gererConsultation(employesOK.get(0));
-                    consultationDao.creerConsultation(consultation);
-                    JpaUtil.validerTransaction();
-            
-                } catch (Exception ex) {
-                    Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium) (modification de l'employé)", ex);
-                    JpaUtil.annulerTransaction();
-                    id = null;
-                    employesOK.get(0).setDisponibilite(true);
-                }
-            }
+            JpaUtil.ouvrirTransaction();
+            clientConsultEnCours = consultationDao.trouverConsultationEnCoursClient(client);
+            JpaUtil.validerTransaction();
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium)", ex);
             id = null;
@@ -295,6 +275,48 @@ public class Service {
             JpaUtil.fermerContextePersistance();
         }
         
+        if(!clientConsultEnCours) {
+            JpaUtil.creerContextePersistance();
+            try {
+                JpaUtil.ouvrirTransaction();
+                employesOK = employeDao.listerEmployesParPriorite(medium.getGenre());
+                JpaUtil.validerTransaction();
+            } catch (Exception ex) {
+                Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium)", ex);
+                id = null;
+            } finally {
+                JpaUtil.fermerContextePersistance();
+            }
+            if(!employesOK.isEmpty()) {
+                JpaUtil.creerContextePersistance();
+                id = employesOK.get(0).getId();
+                serviceOutils.genererNotificationClient(client,medium,employesOK.get(0));
+                serviceOutils.genererNotificationEmploye(client, medium, employesOK.get(0));
+
+                employesOK.get(0).setDisponibilite(false);
+                employesOK.get(0).setNbConsultations(employesOK.get(0).getNbConsultations()+1);
+
+                Consultation consultation = new Consultation(null, null,null, medium, employesOK.get(0), client,null);             
+                try {
+                    JpaUtil.ouvrirTransaction();
+                    employeDao.gererConsultation(employesOK.get(0));
+                    consultationDao.creerConsultation(consultation);
+                    JpaUtil.validerTransaction();
+
+                } catch (Exception ex) {
+                    Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service demanderMedium(medium) (modification de l'employé)", ex);
+                    JpaUtil.annulerTransaction();
+                    id = null;
+                    employesOK.get(0).setDisponibilite(true);
+                } finally {
+                    JpaUtil.fermerContextePersistance();
+                }
+            }
+        } else {
+            long erreur = -1;
+            id = erreur;
+        }
+                
         return id;
     }
     
@@ -373,6 +395,7 @@ public class Service {
         }
         return id;
     }
+    
     public List<Consultation> obtenirConsultationSansCommentaire(Employe employe) {
         List<Consultation> result = null;
         
@@ -408,7 +431,6 @@ public class Service {
         } catch (Exception ex) {
             Logger.getAnonymousLogger().log(Level.WARNING, "Exception lors de l'appel au Service laisserCommentaire(consultation, commentaire)", ex);
             JpaUtil.annulerTransaction();
-            consultation.getEmploye().setDisponibilite(false);
             id = null;
         } finally {
             JpaUtil.fermerContextePersistance();
