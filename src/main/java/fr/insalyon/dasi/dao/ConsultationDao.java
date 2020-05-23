@@ -54,7 +54,7 @@ public class ConsultationDao {
     
     public List<Consultation> trouverConsultationSansCommentaire(Employe employe) {
         EntityManager em = JpaUtil.obtenirContextePersistance();
-        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.commentaire IS null AND c.heureFin IS NOT null AND c.employe =:employe", Consultation.class);
+        TypedQuery<Consultation> query = em.createQuery("SELECT c FROM Consultation c WHERE c.commentaire IS null AND c.heureDebut IS NOT null AND c.employe =:employe", Consultation.class);
         query.setParameter("employe", employe);
         return query.getResultList();
     }

@@ -316,7 +316,6 @@ public class Service {
             long erreur = -1;
             id = erreur;
         }
-                
         return id;
     }
     
