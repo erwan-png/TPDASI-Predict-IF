@@ -32,13 +32,14 @@ public class Client implements Serializable {
     private Adresse adresse;
     private String motDePasse;
     private String numeroTel;
+    private char genre;
     @Embedded
     private ProfilAstrologique profilAstro;
 
     protected Client() {
     }
 
-    public Client(String mail, String nom, String prenom, Date naissance, Adresse adresse, String motDePasse, String numeroTel) {
+    public Client(String mail, String nom, String prenom, Date naissance, Adresse adresse, String motDePasse, String numeroTel, char genre) {
         this.mail = mail;
         this.nom = nom;
         this.prenom = prenom;
@@ -46,7 +47,16 @@ public class Client implements Serializable {
         this.adresse = adresse;
         this.motDePasse = motDePasse;
         this.numeroTel = numeroTel;
+        this.genre = genre;
         this.profilAstro = new ProfilAstrologique();
+    }
+
+    public char getGenre() {
+        return genre;
+    }
+
+    public void setGenre(char genre) {
+        this.genre = genre;
     }
 
     public Long getId() {
@@ -119,7 +129,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + ", numeroTel=" + numeroTel + ", profilAstro=" + profilAstro + '}';
+        return "Client{" + "id=" + id + ", mail=" + mail + ", nom=" + nom + ", prenom=" + prenom + ", naissance=" + naissance + ", adresse=" + adresse + ", motDePasse=" + motDePasse + ", numeroTel=" + numeroTel + ", genre=" + genre + ", profilAstro=" + profilAstro + '}';
     }
 
 }

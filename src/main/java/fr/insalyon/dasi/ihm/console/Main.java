@@ -189,7 +189,7 @@ public class Main {
         Adresse adresse = new Adresse("15 rue de la république","69000","Lyon");
         
         Service service = new Service();
-        Client claude = new Client("claopde.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR","05 04 65 88 29");
+        Client claude = new Client("claopde.chappe@insa-lyon.fr","Chappe", "Claude",date,adresse, "HaCKeR","05 04 65 88 29",'H');
         Long idClaude = service.inscrireClient(claude);
         if (idClaude != null) {
             System.out.println("> Succès inscription");
